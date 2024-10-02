@@ -63,9 +63,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
                                     onContextMenu={(e) => {e.preventDefault()}}
                                     >
                                     <Header navOpened={navOpened} setNavOpened={setNavOpened}/>
-                                    <AppShell.Main>
                                         {children}
-                                    </AppShell.Main>
                                 </AppShell>
                             </>
                         )}
