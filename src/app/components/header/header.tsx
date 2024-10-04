@@ -9,8 +9,10 @@ import styles from './header.module.css'
 import NavbarBreadcrumbs from "../breadcrumbs/NavbarBreadcrumbs";
 import { CrumbItem } from "@/app/_model/CrumbItem";
 import {IconBrandGithub, IconCategory, IconInfoSquareRounded, IconSettings} from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 export default function Header({navOpened, setNavOpened} : {navOpened: boolean, setNavOpened: Dispatch<SetStateAction<boolean>>}) {
+    const router = useRouter();
     
     const navLinks: CrumbItem[] = [
         // {href: '/', name: 'Home'},
@@ -41,11 +43,15 @@ export default function Header({navOpened, setNavOpened} : {navOpened: boolean, 
                 <NavbarBreadcrumbs items={navLinks}/>
             </div>
             <div className={`${styles.header_item} ${styles.wide_menu}`}>
-                    <IconInfoSquareRounded stroke={2} size={30} width={50} />
+                <a className={`${styles.link_wrapper} ${styles.link_hover}`} onClick={() => router.push('/about')}>
+                    <IconInfoSquareRounded stroke={2} size={30} />
+                </a>
                 <Link target={'_blank'} className={`${styles.link_wrapper} ${styles.link_hover}`} href={'https://github.com/mental1sm'}>
                     <IconBrandGithub stroke={2} size={30} />
                 </Link>
-                    <IconSettings stroke={2} size={30} width={50} />
+                <a className={`${styles.link_wrapper} ${styles.link_hover}`} onClick={() => router.push('/settings')}>
+                    <IconSettings stroke={2} size={30} />
+                </a>
             </div>
             <div className={`${styles.header_item} ${styles.dropdown_icon_menu}`}>
                 <Group>

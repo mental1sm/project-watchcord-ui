@@ -1,5 +1,5 @@
 import { MenuItem } from "@/app/_model/MenuItem";
-import { Menu, MenuDropdown } from "@mantine/core";
+import {Group, Menu, MenuDropdown} from "@mantine/core";
 
 export default function ContextMenu({x, y, items}: {x: number, y: number, items: MenuItem[]}) {
 
@@ -13,7 +13,13 @@ export default function ContextMenu({x, y, items}: {x: number, y: number, items:
                 zIndex: 1000
             }}
             >
-                {items.map((item) => <Menu.Item key={item.name} onClick={() => {item.callback()}}>{item.name}</Menu.Item>)}
+                {items.map((item) =>
+                    <Menu.Item key={item.name} onClick={() => {item.callback()}}>
+                        <Group style={{gap: 5}}>
+                            {item.iconChild}
+                            {item.name}
+                        </Group>
+                    </Menu.Item>)}
             </MenuDropdown >
         </Menu>
     );
