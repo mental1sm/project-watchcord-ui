@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import iconReducer from "./IconSlice";
+import iconReducer from "./NavigationIconSlice";
+import navbarStateReducer from "@/app/store/NavbarStateSlice";
 
 
 const store = configureStore({
     reducer: {
         icon: iconReducer,
+        navbar: navbarStateReducer
     }
 })
 

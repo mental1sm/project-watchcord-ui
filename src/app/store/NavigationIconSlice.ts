@@ -9,7 +9,7 @@ const initialState = {
     activeIcon: ActiveNavigation.HOME
 };
 
-const iconSlice = createSlice({
+const navigationIconSlice = createSlice({
     name: 'icon',
     initialState,
     reducers: {
@@ -19,7 +19,7 @@ const iconSlice = createSlice({
     }
 })
 
-export const { setActiveIcon } = iconSlice.actions;
+export const { setActiveIcon } = navigationIconSlice.actions;
 
-const iconReducer = iconSlice.reducer;
+const iconReducer = navigationIconSlice.reducer;
 export default iconReducer;

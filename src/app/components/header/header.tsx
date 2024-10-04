@@ -4,19 +4,27 @@ import {AppShell, Burger, Group} from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/croissants-pupil.svg";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useEffect} from "react";
 import styles from './header.module.css'
 import NavbarBreadcrumbs from "../breadcrumbs/NavbarBreadcrumbs";
 import { CrumbItem } from "@/app/_model/CrumbItem";
 import {IconBrandGithub, IconCategory, IconInfoSquareRounded, IconSettings} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { RootState } from "@/app/store";
-import { useSelector } from "react-redux";
+import {AppDispatch, RootState} from "@/app/store";
+import {useDispatch, useSelector} from "react-redux";
 import { ActiveNavigation } from "@/app/_constants/enums";
+import {setNavbarState} from "@/app/store/NavbarStateSlice";
 
-export default function Header({navOpened, setNavOpened} : {navOpened: boolean, setNavOpened: Dispatch<SetStateAction<boolean>>}) {
+export default function Header({setNavOpened} : {setNavOpened: Dispatch<SetStateAction<boolean>>}) {
     const router = useRouter();
+    const dispatch: AppDispatch = useDispatch();
     const activeIcon = useSelector((state: RootState) => state.icon.activeIcon);
+    const navbarStatus = useSelector((state: RootState) => state.navbar.isOpened);
+    const navbarHidden = useSelector((state: RootState) => state.navbar.visible);
+
+    useEffect(() => {
+        setNavOpened(navbarStatus);
+    }, [navbarStatus]);
     
     const navLinks: CrumbItem[] = [
         // {href: '/', name: 'Home'},
@@ -26,14 +34,15 @@ export default function Header({navOpened, setNavOpened} : {navOpened: boolean, 
     
     return (
         <AppShell.Header className={styles.header}>
-            <Burger
-                opened={navOpened}
+            {navbarHidden &&
+                <Burger
+                opened={navbarStatus}
                 onClick={() => {
-                    setNavOpened(!navOpened)
+                    dispatch(setNavbarState(!navbarStatus));
                 }}
                 hiddenFrom="sm"
-                size="sm"
-            />
+                size="sm"/>
+            }
 
             <div className={`${styles.header_item} ${styles.logo_wrapper}`}>
                 <Link href="/" className={`${styles.link_wrapper}`}>
@@ -63,9 +72,9 @@ export default function Header({navOpened, setNavOpened} : {navOpened: boolean, 
                     <IconSettings stroke={2} size={30} />
                 </a>
             </div>
-            <div className={`${styles.header_item} ${styles.dropdown_icon_menu}`}>
+            <div style={{justifyContent: 'center', minWidth: '59px'}} className={`${styles.header_item} ${styles.dropdown_icon_menu}`}>
                 <Group>
-                    <IconCategory stroke={2} size={30} width={59} />
+                    <IconCategory stroke={2} size={30}/>
                 </Group>
             </div>
 

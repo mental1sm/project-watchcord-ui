@@ -1,15 +1,17 @@
 'use client'
 
 import { AppShell } from "@mantine/core";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import { setActiveIcon } from "../store/IconSlice";
+import { useDispatch } from "react-redux";
+import { setActiveIcon } from "../store/NavigationIconSlice";
 import { ActiveNavigation } from "../_constants/enums";
+import {useEffect} from "react";
 
 export default function AboutPage() {
     const dispatch = useDispatch();
-    const activeIcon = useSelector((state: RootState) => state.icon.activeIcon);
-    dispatch(setActiveIcon(ActiveNavigation.ABOUT));
+
+    useEffect(() => {
+        dispatch(setActiveIcon(ActiveNavigation.ABOUT));
+    }, []);
 
     return (
         <AppShell.Main>

@@ -3,3 +3,8 @@ export enum ActiveNavigation {
     ABOUT,
     SETTINGS
 }
+
+export enum NavbarState {
+    OPEN,
+    CLOSE
+}

@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import Header from "@/app/components/header/header";
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import { Provider } from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 import store from './store';
 
 const Preloader = () => (
@@ -44,7 +44,6 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
 
     useEffect(() => {
         setLoading(false);
-        console.log('Ready')
     }, []);
 
     return (
@@ -65,7 +64,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
                                         padding="md"
                                         onContextMenu={(e) => {e.preventDefault()}}
                                         >
-                                        <Header navOpened={navOpened} setNavOpened={setNavOpened}/>
+                                        <Header setNavOpened={setNavOpened}/>
                                             {children}
                                     </AppShell>
                                 </>
