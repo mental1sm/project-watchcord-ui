@@ -69,6 +69,10 @@
 
 }
 
+.active {
+    color: var(--mantine-color-yellow-7);
+}
+
 @media screen and (min-width: 767.99px) {
     .dropdown_icon_menu {
         display: none;

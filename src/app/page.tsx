@@ -14,6 +14,10 @@ import {mockBots} from "@/app/_constants/constants";
 import {badNotification, goodNotification} from "@/app/components/notifications/notifications";
 import EditBotModal from "@/app/components/modals/bot/EditBotModal";
 import {IconEdit, IconFolderOpen, IconPlus, IconRefresh, IconTrash} from "@tabler/icons-react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store";
+import { setActiveIcon } from "./store/IconSlice";
+import { ActiveNavigation } from "./_constants/enums";
 
 export default function Home() {
     const [botData, setBotData] = useState<Bot[]>([]);
@@ -23,7 +27,10 @@ export default function Home() {
 
     const botService: BotService = BotService.instance();
 
-    
+    const dispatch = useDispatch();
+    const activeIcon = useSelector((state: RootState) => state.icon.activeIcon);
+    dispatch(setActiveIcon(ActiveNavigation.HOME));
+
 
     useEffect(() => {
         //botService.fetchBot(setBotData, setLoading);

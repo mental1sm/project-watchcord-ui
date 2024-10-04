@@ -10,9 +10,13 @@ import NavbarBreadcrumbs from "../breadcrumbs/NavbarBreadcrumbs";
 import { CrumbItem } from "@/app/_model/CrumbItem";
 import {IconBrandGithub, IconCategory, IconInfoSquareRounded, IconSettings} from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { RootState } from "@/app/store";
+import { useSelector } from "react-redux";
+import { ActiveNavigation } from "@/app/_constants/enums";
 
 export default function Header({navOpened, setNavOpened} : {navOpened: boolean, setNavOpened: Dispatch<SetStateAction<boolean>>}) {
     const router = useRouter();
+    const activeIcon = useSelector((state: RootState) => state.icon.activeIcon);
     
     const navLinks: CrumbItem[] = [
         // {href: '/', name: 'Home'},
@@ -43,13 +47,19 @@ export default function Header({navOpened, setNavOpened} : {navOpened: boolean, 
                 <NavbarBreadcrumbs items={navLinks}/>
             </div>
             <div className={`${styles.header_item} ${styles.wide_menu}`}>
-                <a className={`${styles.link_wrapper} ${styles.link_hover}`} onClick={() => router.push('/about')}>
-                    <IconInfoSquareRounded stroke={2} size={30} />
+                <a 
+                className={`${styles.link_wrapper} ${styles.link_hover} ${activeIcon === ActiveNavigation.ABOUT ? styles.active : null}`} 
+                onClick={() => router.push('/about')}
+                >
+                    <IconInfoSquareRounded stroke={2} size={30}/>
                 </a>
                 <Link target={'_blank'} className={`${styles.link_wrapper} ${styles.link_hover}`} href={'https://github.com/mental1sm'}>
                     <IconBrandGithub stroke={2} size={30} />
                 </Link>
-                <a className={`${styles.link_wrapper} ${styles.link_hover}`} onClick={() => router.push('/settings')}>
+                <a 
+                className={`${styles.link_wrapper} ${styles.link_hover} ${activeIcon === ActiveNavigation.SETTINGS ? styles.active : null}`} 
+                onClick={() => router.push('/settings')}
+                >
                     <IconSettings stroke={2} size={30} />
                 </a>
             </div>
