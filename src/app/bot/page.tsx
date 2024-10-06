@@ -1,7 +1,7 @@
 'use client'
 
-import {AppShell, Button, Input, InputWrapper, Loader, SimpleGrid, Stack, Text} from "@mantine/core";
-import BotCard from "@/app/components/cards/bot/bot";
+import {AppShell, Loader, SimpleGrid, Text} from "@mantine/core";
+import BotCard from "@/app/components/cards/bot/bot.card";
 import React, {useEffect, useState} from "react";
 import {BotService} from "@/app/service/BotService";
 import {Bot} from "@/app/_model/Bot";
@@ -17,10 +17,10 @@ import { setActiveIcon } from "@/app/store/NavigationIconSlice";
 import { ActiveNavigation } from "../_constants/enums";
 import {useRouter} from "next/navigation";
 import BotCreateModal from "@/app/components/modals/bot/BotCreateModal";
+import {setNavbarState, setNavbarVisibility} from "@/app/store/NavbarStateSlice";
 
 export default function Home() {
     const [botData, setBotData] = useState<Bot[]>([]);
-    const [loading, setLoading] = useState(true);
     const [contextMenu, setContextMenu] = useState<{ x: number, y: number, type: 'main' | 'bot', bot: Bot | null } | null>(null);
 
     const botService: BotService = BotService.instance();
@@ -37,23 +37,17 @@ export default function Home() {
             .catch((e) => {
                 badNotification({title: 'Bot fetching', message: 'Failed to fetch bots from database!'})
             })
-            .finally(() => {setLoading(false)});
+            .finally(() => {});
     }
 
     useEffect(() => {
+        dispatch(setNavbarVisibility(false));
+        dispatch(setNavbarState(false));
         dispatch(setActiveIcon(ActiveNavigation.HOME));
         fetchAllBots();
     }, []);
 
-    useEffect(() => {
-        const handleClickOutside = () => {
-            if (contextMenu) closeContextMenu();
-        };
-
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, [contextMenu]);
-
+    // ------ CONTEXT MENU ----------------------------------------------------------
     const handleBotCardContextMenu = (e: React.MouseEvent<HTMLDivElement>, bot: Bot) => {
         e.preventDefault();
         e.stopPropagation();
@@ -69,6 +63,17 @@ export default function Home() {
         setContextMenu(null);
     };
 
+    useEffect(() => {
+        const handleClickOutside = () => {
+            if (contextMenu) closeContextMenu();
+        };
+
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [contextMenu]);
+    // -------------------------------------------------------------------------------
+
+    // ------ BOT MODALS -- ----------------------------------------------------------
     const openDeleteModal = () => modals.openConfirmModal({
         title: 'Bot deletion',
         children: (
@@ -138,10 +143,25 @@ export default function Home() {
             />
         )
     });
+    // -------------------------------------------------------------------------------
+
+    const refreshBot = () => {
+        const bot = contextMenu!.bot!;
+        botService.editBot(bot, bot.token)
+            .then(res => {
+                if (res.ok) {
+                    fetchAllBots();
+                    goodNotification({title: 'Bot refreshing', message: 'Successfully refreshed bot!'})
+                }
+            })
+            .catch(e => {
+                badNotification({title: 'Bot refreshing', message: 'Failed to refresh bot!'})
+            })
+    }
 
     const botMenuOptions: MenuItem[] = [
         {name: 'Open', callback: () => {router.push(`/bot/${contextMenu!.bot!.id}/guilds`)}, iconChild: <IconFolderOpen stroke={2} />},
-        {name: 'Refresh', callback: () => alert('Refreshed'), iconChild: <IconRefresh stroke={2} />},
+        {name: 'Refresh', callback: refreshBot, iconChild: <IconRefresh stroke={2} />},
         {name: 'Edit', callback: openEditBotModal, iconChild: <IconEdit stroke={2} />},
         {name: 'Delete', callback: openDeleteModal, iconChild: <IconTrash stroke={2} />}
     ];
@@ -157,8 +177,7 @@ export default function Home() {
                     cols={{base: 1, xs: 2, sm: 3, md: 3, lg: 4, xl: 5, xxl: 6, xxxl: 7, zl: 8}}
                     spacing={{base: 10, sm: 'xl'}}
                 >
-                    {loading && <Loader style={{position: 'fixed', top: '40%', left: '50%'}}/>}
-                    {(!loading && botData.length > 0) && botData?.map(b => {
+                    {botData.length > 0 && botData?.map(b => {
                         return <BotCard
                             onContextMenu={(e) => {handleBotCardContextMenu(e, b)}}
                             onClick={(e) => {router.push(`/bot/${b.id}/guilds`)}}
@@ -166,9 +185,7 @@ export default function Home() {
                             bot={b}/>
                     })}
                 </SimpleGrid>
-                {(!loading && botData!.length === 0) &&
-                    <Emptiness showExtra={true}/>
-                }
+                {botData!.length === 0 && <Emptiness showExtra={true}/>}
                 {contextMenu &&
                     <ContextMenu
                         x={contextMenu.x}

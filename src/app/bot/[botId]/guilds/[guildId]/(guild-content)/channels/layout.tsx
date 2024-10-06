@@ -15,12 +15,7 @@ export default function GuildChannelsLayout({children,}: Readonly<{ children: Re
 
     return (
         <>
-            <AppShell.Navbar>
-                nav
-            </AppShell.Navbar>
-            <AppShell.Main>
                 {children}
-            </AppShell.Main>
         </>
     );
 }

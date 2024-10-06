@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import Header from "@/app/components/header/header";
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
-import {Provider, useDispatch} from 'react-redux';
+import {Provider} from 'react-redux';
 import store from './store';
 
 const Preloader = () => (
@@ -39,12 +39,7 @@ const breakpoints = {
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
 
-    const [loading, setLoading] = useState(true);
     const [navOpened, setNavOpened] = useState(false)
-
-    useEffect(() => {
-        setLoading(false);
-    }, []);
 
     return (
         <html lang="en">
@@ -56,19 +51,17 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
                     <MantineProvider theme={{autoContrast: true, breakpoints: breakpoints}} forceColorScheme={'dark'}>
                         <ModalsProvider>
                             <Notifications />
-                            {loading ? (<Preloader/>) : (
-                                <>
-                                    <AppShell
-                                        header={{ height: 60 }}
-                                        navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: !navOpened, mobile: !navOpened } }}
-                                        padding="md"
-                                        onContextMenu={(e) => {e.preventDefault()}}
-                                        >
-                                        <Header setNavOpened={setNavOpened}/>
-                                            {children}
-                                    </AppShell>
-                                </>
-                            )}
+                            <>
+                                <AppShell
+                                    header={{ height: 60 }}
+                                    navbar={{ width: 300, breakpoint: 'sm', collapsed: { desktop: !navOpened, mobile: !navOpened } }}
+                                    padding="md"
+                                    onContextMenu={(e) => {e.preventDefault()}}
+                                    >
+                                    <Header setNavOpened={setNavOpened}/>
+                                        {children}
+                                </AppShell>
+                            </>
                         </ModalsProvider>
                     </MantineProvider>
                 </Provider>

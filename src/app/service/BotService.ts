@@ -16,10 +16,6 @@ export class BotService {
         return fetch(baseUrl + '/bot', {method: 'GET'});
     }
 
-    async fetchOneBot(botId: string): Promise<Response> {
-        return fetch(baseUrl + `/bot/${botId}`, {method: 'GET'});
-    }
-
     async addNewBot(token: string): Promise<Response> {
         const payload = {'token': token};
         const headers = {'Content-Type': 'application/json'};
@@ -27,6 +23,11 @@ export class BotService {
         return fetch(baseUrl + '/bot', {method: 'POST', body: JSON.stringify(payload), headers: headers});
     }
 
+    /**
+     * Can be user as for edit, as for fetch actual info :)
+     * @param bot Bot id
+     * @param token Bot token
+     */
     async editBot(bot: Bot, token: string): Promise<Response> {
         const payload = {'token': token};
         const headers = {'Content-Type': 'application/json'};

@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ActiveNavigation } from '../_constants/enums';
 
-interface IconState {
-    activeIcon: ActiveNavigation;
-  }
 
 const initialState = {
     activeIcon: ActiveNavigation.HOME

@@ -1,0 +1,18 @@
+.channel_wrapper {
+    padding: 7px;
+    margin-left: 10px;
+
+    &:hover {
+        background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-5));;
+    }
+}
+
+
+.navbar {
+    display: flex;
+    flex-direction: column;
+}
+
+.collapsed {
+    margin-left: 15px;
+}
