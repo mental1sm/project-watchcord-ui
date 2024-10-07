@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import {Skeleton, Stack} from "@mantine/core";
-import {IconLayoutSidebarLeftExpand} from "../../../components/icons/IconBundle.tsx";
+import {IconClipboard, IconLayoutSidebarLeftExpand} from "../../../components/icons/IconBundle.tsx";
 import {useDispatch} from "react-redux";
 import { Message } from "../../../_model/Message.ts";
 import { Channel } from "../../../_model/Channel.ts";
@@ -99,10 +99,18 @@ export default function ChannelViewPage() {
     //     e.preventDefault();
     //     setContextMenu({x: e.pageX, y: e.pageY, type: 'message', message: msg})
     // }
+
+    const copySelectedText = () => {
+        const selection = window.getSelection();
+        if (selection) {
+            navigator.clipboard.writeText(selection.toString()).then(() => {}).catch(() => {});
+        }
+    };
     // -------------------------------------------------------------------------------
 
     const channelContextMenuOptions: MenuItem[] = [
-        { name: 'Expand sidebar', iconChild: <IconLayoutSidebarLeftExpand stroke={2}/>, callback: () => dispatch(setNavbarState(true))}
+        { name: 'Expand sidebar', iconChild: <IconLayoutSidebarLeftExpand stroke={2}/>, callback: () => dispatch(setNavbarState(true))},
+        { name: 'Copy to clipboard', iconChild: <IconClipboard stroke={2}/> , callback: copySelectedText}
     ];
 
     const messageContextMenuOptions: MenuItem[] = [
@@ -134,10 +142,7 @@ export default function ChannelViewPage() {
                             )}
                         </Stack>
                         <RefreshButton onClick={() => {
-                            if (messageData.length === 0) {
-                               refreshMessages({limit: 50})
-                            }
-
+                            refreshMessages({limit: 50})
                         }}/>
                     </ChannelShell.Main>
                     <ChannelShell.Footer>

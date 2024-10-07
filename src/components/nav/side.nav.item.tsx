@@ -21,7 +21,7 @@ export default function SideNavItem({ item, rules, onClick }: {item: NavbarItem,
         <Stack gap={0}>
             <UnstyledButton className={styles.channel_wrapper} onClick={handleClick}>
                 <Group gap={7}>
-                    {item.type === 4 ? <IconChevronRight stroke={2}/> : null}
+                    {item.type === 4 ? <IconChevronRight opened={opened} stroke={2}/> : null}
                     {rules.find((rule) => rule.type === item.type)!.icon}
                     {item.type === 4 ? item.name.toUpperCase() : item.name }
                 </Group>

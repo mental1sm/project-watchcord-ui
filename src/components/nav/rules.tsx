@@ -1,5 +1,11 @@
 import {NavbarIconRule} from "./navbar.properties";
-import {IconCalendarClock, IconHash, IconJoinRound, IconMessageCircleFilled, IconVolume} from "../icons/IconBundle.tsx";
+import {
+    IconCalendarClock,
+    IconHash,
+    IconJoinRound,
+    IconMessageCircleFilled,
+    IconVolume
+} from "../icons/IconBundle.tsx";
 
 export const rules: NavbarIconRule[] = [
     {type: 0, icon: <IconHash stroke={2}/>},

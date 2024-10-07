@@ -22,7 +22,7 @@ const ChannelShellHeader = ({ children }: {children: React.ReactNode}) => (
 
 const ChannelShellMain = ({children}: { children: React.ReactNode }) => (
 
-        <ScrollArea mah={'80vh'} className={styles.message_body}>
+        <ScrollArea mah={'100vh'} h={'30vh'} className={styles.message_body}>
             {children}
         </ScrollArea>
 );

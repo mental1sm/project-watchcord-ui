@@ -36,7 +36,12 @@ export default function MessageCard({message}: {message: Message}) {
                     <div
                         className={styles.msg_body}
                         dangerouslySetInnerHTML={{
-                            __html: formatText(message.content.replace(/\n/g, '<br/>'))
+                            __html: formatText(message.content
+                                .replace(/&/g, '&amp;')
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;')
+                                .replace(/\n/g, '<br/>')
+                            )
                         }}
                     ></div>
                 </div>

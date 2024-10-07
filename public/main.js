@@ -14,6 +14,7 @@ async function createWindow() {
         webPreferences: {
             nodeIntegration: true,
         },
+        autoHideMenuBar: true
     });
 
 

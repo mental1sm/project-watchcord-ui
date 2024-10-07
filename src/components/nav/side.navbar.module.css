@@ -16,3 +16,15 @@
 .collapsed {
     margin-left: 15px;
 }
+
+.icon_group {
+    & svg {
+        transition: color 0.3s ease, transform 0.6s ease;
+    }
+}
+
+.icon_group_expanded {
+    & svg {
+        transform: rotate(-90deg);
+    }
+}

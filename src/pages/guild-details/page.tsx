@@ -164,7 +164,7 @@ export default function GuildDetailsPage() {
                 key={`${contextMenu.x}-${contextMenu.y}-${contextMenu.type}`}
                 x={contextMenu.x} y={contextMenu.y}
                 items={contextMenu.type === 'nav' ? navContextMenuOptions : mainContextMenuOptions}/>}
-            <AppShell.Navbar onContextMenu={handleNavContextMenu}>
+            <AppShell.Navbar pt={10} onContextMenu={handleNavContextMenu}>
                 {channelData.length > 0 &&
                     <SideNavbar props={parseChannels()}/>
                 }
