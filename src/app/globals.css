@@ -7,10 +7,10 @@
 /*}*/
 
 :root {
-    --background-color: #242424;
+    overflow: hidden;
 }
 
-/*noinspection CssUnresolvedCustomProperty*/
-/*body {*/
-/*    background-color: var(--background-color);*/
-/*}*/
+noinspection CssUnresolvedCustomProperty
+body {
+    overflow: hidden;
+}

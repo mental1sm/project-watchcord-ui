@@ -18,4 +18,8 @@ export class ChannelService {
     async refreshAll(botId: string, guildId: string): Promise<Response> {
         return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels?fetch=true`)
     }
+
+    async fetchOne({botId, guildId, channelId}: {botId: string, guildId: string, channelId: string}): Promise<Response> {
+        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels/${channelId}`)
+    }
 }

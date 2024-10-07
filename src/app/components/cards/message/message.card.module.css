@@ -1,0 +1,36 @@
+.card {
+    padding: 5px;
+    padding-left: 15px;
+    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-6));
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.card:hover {
+    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
+}
+
+.msg_title {
+
+}
+
+.msg_wrapper {
+
+}
+
+.msg_body {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+
+}
+
+.avatar_wrapper {
+
+}
+
+.image {
+    border-radius: 30px;
+}

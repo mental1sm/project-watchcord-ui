@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-interface NavbarStatus {
-    status: boolean;
-    hidden: boolean;
-}
+// interface NavbarStatus {
+//     status: boolean;
+//     hidden: boolean;
+// }
 
 const initialState = {
     isOpened: false,

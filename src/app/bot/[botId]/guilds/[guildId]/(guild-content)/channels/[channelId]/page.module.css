@@ -1,0 +1,38 @@
+.channel_section {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 13px;
+    width: 100%;
+}
+
+.channel_header_item {
+
+}
+
+.channel_header_group {
+    font-size: 18px;
+    font-weight: 500;
+
+    & svg {
+        scale: 1.2;
+    }
+}
+
+.channel_body {
+    background-color: light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-6));
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.channel_footer {
+
+}
+
+.message_body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column-reverse;
+}

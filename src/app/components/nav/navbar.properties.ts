@@ -3,7 +3,8 @@ import {Channel} from "@/app/_model/Channel";
 
 export type NavbarProperties = {
     rules: NavbarIconRule[];
-    items: NavbarItem[];
+    items: NavbarItem[]
+    baseHref: string;
 }
 
 export type NavbarItem = {

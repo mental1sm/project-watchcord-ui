@@ -1,0 +1,28 @@
+.refresh_button {
+    & svg {
+        transition: color 0.3s ease, transform 1s ease-in-out;
+    }
+}
+
+.refresh_button:hover {
+    & svg {
+        color: var(--mantine-color-blue-7);
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+.refresh_button_spin {
+    & svg {
+        animation: spin 2s linear infinite;
+    }
+}
