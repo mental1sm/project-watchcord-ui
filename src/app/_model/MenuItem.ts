@@ -2,6 +2,6 @@ import {ReactNode} from "react";
 
 export interface MenuItem {
     name: string;
-    callback: Function;
+    callback: () => void;
     iconChild: ReactNode;
 }

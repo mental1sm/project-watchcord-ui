@@ -1,6 +1,6 @@
 'use client'
 
-import {AppShell, Loader, SimpleGrid, Text} from "@mantine/core";
+import {AppShell, SimpleGrid, Text} from "@mantine/core";
 import BotCard from "@/app/components/cards/bot/bot.card";
 import React, {useEffect, useState} from "react";
 import {BotService} from "@/app/service/BotService";
@@ -34,7 +34,7 @@ export default function Home() {
             .then((data) => {
                 setBotData(data);
             })
-            .catch((e) => {
+            .catch(() => {
                 badNotification({title: 'Bot fetching', message: 'Failed to fetch bots from database!'})
             })
             .finally(() => {});
@@ -94,7 +94,7 @@ export default function Home() {
                         setBotData(botData.filter((bot) => bot.id === contextMenu!.bot!.id))
                     }
                 })
-                .catch((e) => {
+                .catch(() => {
                     badNotification({title: 'Bot deletion', message: 'Failed to delete'})
                 })
         }
@@ -110,7 +110,7 @@ export default function Home() {
                     })
                     fetchAllBots();
                 }
-            }).catch((e) => {
+            }).catch(() => {
                 badNotification({
                     title: 'New Bot',
                     message: 'Failed to add'
@@ -138,7 +138,7 @@ export default function Home() {
                             goodNotification({title: 'Bot edit', message: 'Successfully edited'})
                         }
                     })
-                        .catch((e) => { badNotification({title: 'Bot edit', message: 'Failed to edit'}) })
+                        .catch(() => { badNotification({title: 'Bot edit', message: 'Failed to edit'}) })
                 }}
             />
         )
@@ -154,7 +154,7 @@ export default function Home() {
                     goodNotification({title: 'Bot refreshing', message: 'Successfully refreshed bot!'})
                 }
             })
-            .catch(e => {
+            .catch(() => {
                 badNotification({title: 'Bot refreshing', message: 'Failed to refresh bot!'})
             })
     }
@@ -174,13 +174,14 @@ export default function Home() {
         <>
             <AppShell.Main onContextMenu={handleMainContextMenu}>
                 <SimpleGrid
+                    p={'md'}
                     cols={{base: 1, xs: 2, sm: 3, md: 3, lg: 4, xl: 5, xxl: 6, xxxl: 7, zl: 8}}
                     spacing={{base: 10, sm: 'xl'}}
                 >
                     {botData.length > 0 && botData?.map(b => {
                         return <BotCard
                             onContextMenu={(e) => {handleBotCardContextMenu(e, b)}}
-                            onClick={(e) => {router.push(`/bot/${b.id}/guilds`)}}
+                            onClick={() => {router.push(`/bot/${b.id}/guilds`)}}
                             key={b.id}
                             bot={b}/>
                     })}

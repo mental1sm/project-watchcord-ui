@@ -83,7 +83,7 @@ export default function BotGuildsPage({ params }: { params: { botId: string } })
                 setGuildData(data);
                 goodNotification({title: 'Guilds refreshing', message: 'Successfully refreshed guilds!'});
             })
-            .catch(e => {badNotification({title: 'Guilds refreshing', message: 'Failed to refresh guilds!'})});
+            .catch(() => {badNotification({title: 'Guilds refreshing', message: 'Failed to refresh guilds!'})});
     }
 
     const refreshOneGuild = () => {
@@ -93,7 +93,7 @@ export default function BotGuildsPage({ params }: { params: { botId: string } })
                 setGuildData(data);
                 goodNotification({title: 'Guild refreshing', message: 'Successfully refreshed guild!'});
             })
-            .catch(e => {badNotification({title: 'Guild refreshing', message: 'Failed to refresh guild!'})});
+            .catch(() => {badNotification({title: 'Guild refreshing', message: 'Failed to refresh guild!'})});
     }
 
     const guildContextMenuOptions: MenuItem[] = [
@@ -116,6 +116,7 @@ export default function BotGuildsPage({ params }: { params: { botId: string } })
             {guildData.length < 0 && <Emptiness showExtra={false}/>}
 
             <SimpleGrid
+                p={'md'}
                 cols={{base: 1, xs: 2, sm: 3, md: 3, lg: 4, xl: 5, xxl: 6, xxxl: 7, zl: 8}}
                 spacing={{base: 10, sm: 'xl'}}>
 
