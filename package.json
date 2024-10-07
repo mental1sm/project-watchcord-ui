@@ -2,12 +2,37 @@
   "name": "project-watchcord-ui",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "main": "public/main.js",
+  "homepage": "./",
+  "build": {
+    "appId": "com.mental1sm.project-watchcord-ui",
+    "productName": "Project WatchCord",
+    "files": [
+      "dist/**/*",
+      "public/main.js",
+      "public/icon.png"
+    ],
+    "directories": {
+      "output": "build"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:release": "set APP_DEV=false && tsc -b && vite build && electron-builder",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron": "set APP_DEV=true && electron .",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "@mantine/core": "^7.13.2",
@@ -15,7 +40,6 @@
     "@mantine/modals": "^7.13.2",
     "@mantine/notifications": "^7.13.2",
     "@reduxjs/toolkit": "^2.2.7",
-    "@tabler/icons-react": "^3.19.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",
@@ -29,6 +53,9 @@
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
+    "electron": "^32.1.2",
+    "electron-builder": "^25.1.7",
+    "electron-is-dev": "^3.0.1",
     "eslint": "^9.11.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",

@@ -2,22 +2,22 @@
 
 import React, {useEffect, useState} from "react";
 import {Skeleton, Stack} from "@mantine/core";
-import {IconLayoutSidebarLeftExpand} from "@tabler/icons-react";
+import {IconLayoutSidebarLeftExpand} from "../../../components/icons/IconBundle.tsx";
 import {useDispatch} from "react-redux";
-import { Message } from "../../_model/Message";
-import { Channel } from "../../_model/Channel";
-import { MessageService } from "../../service/MessageService";
-import { ChannelService } from "../../service/ChannelService";
-import { badNotification } from "../../components/notifications/notifications";
-import { MessageFetchingOptions } from "../../_model/MessageFetchingOptions";
-import { MenuItem } from "../../_model/MenuItem";
-import { setNavbarState } from "../../store/NavbarStateSlice";
-import ContextMenu from "../../components/menu/ContextMenu";
-import ChannelShell from "./channel.shell";
-import { rules } from "../../components/nav/rules";
-import RefreshButton from "../../components/refresh/refresh.button";
-import Emptiness from "../../components/emptyness/Emptiness";
-import MessageCard from "../../components/cards/message/message.card";
+import { Message } from "../../../_model/Message.ts";
+import { Channel } from "../../../_model/Channel.ts";
+import { MessageService } from "../../../service/MessageService.ts";
+import { ChannelService } from "../../../service/ChannelService.ts";
+import { badNotification } from "../../../components/notifications/notifications.ts";
+import { MessageFetchingOptions } from "../../../_model/MessageFetchingOptions.ts";
+import { MenuItem } from "../../../_model/MenuItem.ts";
+import { setNavbarState } from "../../../store/NavbarStateSlice.ts";
+import ContextMenu from "../../../components/menu/ContextMenu.tsx";
+import ChannelShell from "./channel.shell.tsx";
+import { rules } from "../../../components/nav/rules.tsx";
+import RefreshButton from "../../../components/refresh/refresh.button.tsx";
+import Emptiness from "../../../components/emptyness/Emptiness.tsx";
+import MessageCard from "../../../components/cards/message/message.card.tsx";
 import { useParams } from "react-router";
 
 export default function ChannelViewPage() {
@@ -68,9 +68,11 @@ export default function ChannelViewPage() {
     }
 
     useEffect(() => {
+       setMessageData([]);
        fetchChannel();
        fetchMessages({limit: 50});
-    }, []);
+    }, [channelId]);
+
 
     // ------ CONTEXT MENU ----------------------------------------------------------
     useEffect(() => {
@@ -79,10 +81,8 @@ export default function ChannelViewPage() {
         };
 
         document.addEventListener('click', handleClickOutside);
-        document.addEventListener('contextmenu', handleClickOutside);
         return () => {
             document.removeEventListener('click', handleClickOutside);
-            document.removeEventListener('contextmenu', handleClickOutside);
         };
     }, [contextMenu]);
 

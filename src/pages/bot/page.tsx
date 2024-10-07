@@ -11,7 +11,7 @@ import {modals} from "@mantine/modals";
 import Emptiness from "../../components/emptyness/Emptiness";
 import {badNotification, goodNotification} from "../../components/notifications/notifications";
 import EditBotModal from "../../components/modals/bot/EditBotModal";
-import {IconEdit, IconFolderOpen, IconPlus, IconRefresh, IconTrash} from "@tabler/icons-react";
+import {IconEdit, IconFolderOpen, IconPlus, IconRefresh, IconTrash} from "../../components/icons/IconBundle.tsx";
 import { useDispatch } from "react-redux";
 import { setActiveIcon } from "../../store/NavigationIconSlice";
 import { ActiveNavigation } from "../../_constants/enums";

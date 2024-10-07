@@ -6,3 +6,8 @@ noinspection CssUnresolvedCustomProperty
 body {
   overflow: hidden;
 }
+
+.logo {
+  height: 100%;
+  width: auto;
+}

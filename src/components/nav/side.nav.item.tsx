@@ -1,7 +1,9 @@
-import {NavbarIconRule, NavbarItem} from "../../components/nav/navbar.properties";
+import {NavbarIconRule, NavbarItem} from "./navbar.properties.ts";
 import styles from  './side.navbar.module.css';
 import {Collapse, Group, Stack, UnstyledButton} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
+import {IconChevronRight} from "../icons/IconBundle.tsx";
+
 
 export default function SideNavItem({ item, rules, onClick }: {item: NavbarItem, rules: NavbarIconRule[], onClick: (id: string) => void}) {
     const [opened, { toggle }] = useDisclosure(true);

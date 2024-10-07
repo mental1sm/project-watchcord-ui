@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch} from "react-redux";
 import {AppShell, SimpleGrid} from "@mantine/core";
-import {IconFolderOpen, IconRefresh} from "@tabler/icons-react";
+import {IconFolderOpen, IconRefresh} from "../../components/icons/IconBundle.tsx";
 import { useNavigate, useParams } from "react-router";
 import { setActiveIcon } from "../../store/NavigationIconSlice";
 import { ActiveNavigation } from "../../_constants/enums";

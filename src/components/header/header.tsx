@@ -1,7 +1,6 @@
 'use client'
 
-import {AppShell, Burger, Group, Image} from "@mantine/core";
-import logo from "../../assets/croissants-pupil.svg";
+import {AppShell, Burger, Group} from "@mantine/core";
 import {Dispatch, SetStateAction, useEffect} from "react";
 import styles from './header.module.css'
 import NavbarBreadcrumbs from "../breadcrumbs/NavbarBreadcrumbs";
@@ -11,6 +10,8 @@ import {useDispatch, useSelector} from "react-redux";
 import { ActiveNavigation } from "../../_constants/enums";
 import {setNavbarState} from "../../store/NavbarStateSlice";
 import { Link, useNavigate } from "react-router-dom";
+
+import {IconBrandGithub, IconCategory, IconInfoSquareRounded, IconSettings, Logo} from "../icons/IconBundle.tsx";
 
 export default function Header({setNavOpened} : {setNavOpened: Dispatch<SetStateAction<boolean>>}) {
     const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function Header({setNavOpened} : {setNavOpened: Dispatch<SetState
             <div className={`${styles.header_item} ${styles.logo_wrapper}`}>
                 <Link to={'/'} className={`${styles.link_wrapper}`}>
                     <div className={styles.image_wrapper}>
-                        <Image className={styles.logo} src={logo} alt="logo"/>
+                        <Logo className={styles.logo}/>
                     </div>
                     <p>WatchCord</p>
                 </Link>

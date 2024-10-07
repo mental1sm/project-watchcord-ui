@@ -1,8 +1,6 @@
-'use client'
-
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
-import {IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand, IconRefresh} from "@tabler/icons-react";
+import {IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand, IconRefresh} from "../../components/icons/IconBundle.tsx";
 import {AppShell} from "@mantine/core";
 import styles from './page.module.css';
 import { Channel } from "../../_model/Channel";
@@ -51,10 +49,8 @@ export default function GuildDetailsPage() {
         };
 
         document.addEventListener('click', handleClickOutside);
-        document.addEventListener('contextmenu', handleClickOutside);
         return () => {
             document.removeEventListener('click', handleClickOutside);
-            document.removeEventListener('contextmenu', handleClickOutside);
         }
     }, [contextMenu]);
 
@@ -67,10 +63,11 @@ export default function GuildDetailsPage() {
         setContextMenu({x: e.pageX, y: e.pageY, type: 'nav'})
     }
 
-    // const handleMainContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-    //     e.preventDefault();
-    //     setContextMenu({x: e.pageX, y: e.pageY, type: 'main'})
-    // }
+    // @ts-ignore
+    const handleMainContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setContextMenu({x: e.pageX, y: e.pageY, type: 'main'})
+    }
     // -------------------------------------------------------------------------------
 
     // ------ CHANNEL TREE PARSING ---------------------------------------------------
@@ -164,6 +161,7 @@ export default function GuildDetailsPage() {
     return (
         <>
             {contextMenu && <ContextMenu
+                key={`${contextMenu.x}-${contextMenu.y}-${contextMenu.type}`}
                 x={contextMenu.x} y={contextMenu.y}
                 items={contextMenu.type === 'nav' ? navContextMenuOptions : mainContextMenuOptions}/>}
             <AppShell.Navbar onContextMenu={handleNavContextMenu}>

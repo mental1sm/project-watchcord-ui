@@ -1,7 +1,7 @@
 import React from "react";
 import {Center, UnstyledButton} from "@mantine/core";
-import {IconRefresh} from "@tabler/icons-react";
 import styles from './refresh.button.module.css';
+import {IconRefresh} from "../icons/IconBundle.tsx";
 
 export default function RefreshButton({onClick}: {onClick: React.MouseEventHandler<HTMLButtonElement>}) {
     return (

@@ -18,13 +18,18 @@
     cursor: default;
 }
 
-.link_hover:hover {
-    transition: color 0.3s ease, transform 0.3s ease;
-    color: var(--mantine-color-blue-7);
-    transform: translateY(-3px);
+.link_hover {
+    & svg {
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+}
 
-    & div {
+.link_hover:hover {
+
+
+    & svg {
         color: var(--mantine-color-blue-7);
+        transform: translateY(-3px);
     }
 }
 

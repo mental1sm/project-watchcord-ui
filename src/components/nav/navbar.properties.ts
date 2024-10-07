@@ -1,5 +1,6 @@
 import {ReactNode} from "react";
-import {Channel} from "@/app/_model/Channel";
+import {Channel} from "../../_model/Channel.ts";
+
 
 export type NavbarProperties = {
     rules: NavbarIconRule[];
