@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useEffect, useState } from "react";
 import {useDispatch} from "react-redux";
 import {AppShell, SimpleGrid} from "@mantine/core";
@@ -90,7 +88,7 @@ export default function BotGuildsPage() {
         guildService.refreshOne(botId!, contextMenu!.guild!.id)
             .then(res => res.json())
             .then(data => {
-                setGuildData(data);
+                refreshAllGuilds();
                 goodNotification({title: 'Guild refreshing', message: 'Successfully refreshed guild!'});
             })
             .catch(() => {badNotification({title: 'Guild refreshing', message: 'Failed to refresh guild!'})});

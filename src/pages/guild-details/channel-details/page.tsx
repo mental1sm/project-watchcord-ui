@@ -19,6 +19,7 @@ import RefreshButton from "../../../components/refresh/refresh.button.tsx";
 import Emptiness from "../../../components/emptyness/Emptiness.tsx";
 import MessageCard from "../../../components/cards/message/message.card.tsx";
 import { useParams } from "react-router";
+import JoinMessageCard from "../../../components/cards/message/join.message.card.tsx";
 
 export default function ChannelViewPage() {
     type Params = {
@@ -117,6 +118,11 @@ export default function ChannelViewPage() {
 
     ]
 
+    const handleTopRefreshButton = () => {
+        const lassMessage = messageData[0];
+        
+    }
+
     return (
         <>
                 {contextMenu && <ContextMenu
@@ -133,12 +139,14 @@ export default function ChannelViewPage() {
                         }
                     </ChannelShell.Header>
                     <ChannelShell.Main>
-                        {messageData.length > 0 && <RefreshButton onClick={() => {}}/>}
+                        {messageData.length > 0 && <RefreshButton onClick={handleTopRefreshButton}/>}
                         <Stack>
                             {messageData.length === 0 && <Emptiness showExtra={false}/>}
 
                             {messageData.length > 0 && messageData.map(msg =>
-                                <MessageCard message={msg} key={msg.id}/>
+                                (
+                                    msg.type === 7 ? <JoinMessageCard message={msg} key={msg.id}/> : <MessageCard message={msg} key={msg.id}/>
+                                )
                             )}
                         </Stack>
                         <RefreshButton onClick={() => {
