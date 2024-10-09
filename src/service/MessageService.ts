@@ -13,12 +13,9 @@ export class MessageService {
         return MessageService._instance;
     }
 
-    async fetch({botId, guildId, channelId} : {botId: string, guildId: string, channelId: string}, options: MessageFetchingOptions) {
-        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels/${channelId}/messages?fetch=false` + this.buildQuery(options))
-    }
-
-    async refresh({botId, guildId, channelId}: {botId: string, guildId: string, channelId: string}, options: MessageFetchingOptions) {
-        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels/${channelId}/messages?fetch=true` + this.buildQuery(options))
+    async fetch({botId, guildId, channelId} : {botId: string, guildId: string, channelId: string, _fetch?: boolean}, options: MessageFetchingOptions) {
+        const fetching = options._fetch ? "fetch=true" : "fetch=false";
+        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels/${channelId}/messages?${fetching}` + this.buildQuery(options))
     }
 
     buildQuery(options: MessageFetchingOptions): string {

@@ -10,4 +10,5 @@ export type MessageFetchingOptions = {
     after?: string;
     before?: string;
     around?: string;
+    _fetch?: boolean;
 }

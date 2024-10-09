@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './page.module.css';
 import {Divider, Group, ScrollArea} from "@mantine/core";
 
@@ -20,12 +20,34 @@ const ChannelShellHeader = ({ children }: {children: React.ReactNode}) => (
 )
 ;
 
-const ChannelShellMain = ({children}: { children: React.ReactNode }) => (
+const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
 
-        <ScrollArea mah={'100vh'} h={'30vh'} className={styles.message_body}>
-            {children}
+    const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
+    const viewportRef = useRef<HTMLDivElement>(null);
+    const prevScrollHeight = useRef<number>(0);
+
+    useEffect(() => {
+        if (!viewportRef.current) return;
+
+        const scrollDiffer = viewportRef.current.scrollHeight - prevScrollHeight.current;
+
+        prevScrollHeight.current = viewportRef.current.scrollHeight;
+
+        if (scrollDiffer > 0) {
+            const newScrollTop = viewportRef.current.scrollTop + scrollDiffer;
+            viewportRef.current.scrollTo({ top: newScrollTop, behavior: 'instant' });
+        }
+
+    }, [scrollPosition, children]);
+
+    return (
+        <ScrollArea onScrollPositionChange={onScrollPositionChange} mah={'100vh'} h={'30vh'} className={styles.message_body} viewportRef={viewportRef}>
+            <div>
+                {children}
+            </div>
         </ScrollArea>
-);
+    );
+};
 
 const ChannelShellFooter = ({ children }: {children: React.ReactNode}) => (
     <div className={styles.channel_footer}>

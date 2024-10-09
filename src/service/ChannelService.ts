@@ -12,15 +12,13 @@ export class ChannelService {
         return ChannelService._instance;
     }
 
-    async fetchAll(botId: string, guildId: string): Promise<Response> {
-        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels`)
+    async fetchAll(botId: string, guildId: string, _fetch: boolean = false): Promise<Response> {
+        const fetching = _fetch ? "fetch=true" : "fetch=false";
+        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels?${fetching}`)
     }
 
-    async refreshAll(botId: string, guildId: string): Promise<Response> {
-        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels?fetch=true`)
-    }
-
-    async fetchOne({botId, guildId, channelId}: {botId: string, guildId: string, channelId: string}): Promise<Response> {
-        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels/${channelId}`)
+    async fetchOne({botId, guildId, channelId, _fetch = false}: {botId: string, guildId: string, channelId: string, _fetch?: boolean}): Promise<Response> {
+        const fetching = _fetch ? "fetch=true" : "fetch=false";
+        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}/channels/${channelId}?${fetching}`)
     }
 }

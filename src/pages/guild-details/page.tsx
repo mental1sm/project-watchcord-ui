@@ -25,17 +25,22 @@ export default function GuildDetailsPage() {
     const dispatch = useDispatch();
 
 
-    useEffect(() => {
-        dispatch(setNavbarVisibility(true))
-        dispatch(setNavbarState(true));
-        channelService.fetchAll(botId!, guildId!)
+    const fetchChannels = (fetch: boolean = false) => {
+        channelService.fetchAll(botId!, guildId!, fetch)
             .then((res) => res.json())
             .then((data) => {
                 setChannelData(data)
+                fetch ? goodNotification({title: 'Channel fetching', message: 'Successful channel fetching'}) : null;
             })
             .catch(() => {
-                badNotification({title: 'Channel fetching', message: 'Failed to fetch'})
+                badNotification({title: 'Channel fetching', message: 'Failed to fetch!'})
             })
+    }
+
+    useEffect(() => {
+        dispatch(setNavbarVisibility(true))
+        dispatch(setNavbarState(true));
+        fetchChannels();
     }, []);
 
     useEffect(() => {
@@ -137,20 +142,8 @@ export default function GuildDetailsPage() {
     }
     // -------------------------------------------------------------------------------
 
-    const refreshChannels = () => {
-        channelService.refreshAll(botId!, guildId!)
-            .then(res => res.json())
-            .then(data => {
-                setChannelData(data);
-                goodNotification({title: 'Channel refreshing', message: 'Successfully refreshed channels!'});
-            })
-            .catch(() => {
-                badNotification({title: 'Channel refreshing', message: 'Failed to refresh channels!'})
-            })
-    }
-
     const navContextMenuOptions: MenuItem[] = [
-        { name: 'Refresh all', iconChild: <IconRefresh stroke={2} />, callback: refreshChannels },
+        { name: 'Refresh all', iconChild: <IconRefresh stroke={2} />, callback: () => fetchChannels(true)},
         { name: 'Collapse sidebar', iconChild: <IconLayoutSidebarLeftCollapse stroke={2}/>, callback: () => dispatch(setNavbarState(false))}
     ]
 

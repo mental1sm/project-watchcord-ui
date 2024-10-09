@@ -8,7 +8,7 @@ import { Message } from "../../../_model/Message.ts";
 import { Channel } from "../../../_model/Channel.ts";
 import { MessageService } from "../../../service/MessageService.ts";
 import { ChannelService } from "../../../service/ChannelService.ts";
-import { badNotification } from "../../../components/notifications/notifications.ts";
+import {badNotification, goodNotification} from "../../../components/notifications/notifications.ts";
 import { MessageFetchingOptions } from "../../../_model/MessageFetchingOptions.ts";
 import { MenuItem } from "../../../_model/MenuItem.ts";
 import { setNavbarState } from "../../../store/NavbarStateSlice.ts";
@@ -49,24 +49,22 @@ export default function ChannelViewPage() {
             .then(res => res.json())
             .then((data: Message[]) => {
                 setMessageData(prevState => {
-                    const newMessages = data.filter(msg => !prevState.some(existingMsg => existingMsg.id === msg.id))
-                    return [...prevState, ...newMessages];
-                })
+                    const messageMap = new Map(prevState.map(msg => [msg.id, msg]));
+
+                    data.forEach(msg => {
+                        messageMap.set(msg.id, msg);
+                    });
+
+                    const updatedMessages = data.map(msg => messageMap.get(msg.id)!);
+                    const remainingMessages = prevState.filter(msg => !data.some(newMsg => newMsg.id === msg.id));
+
+                    return [...updatedMessages, ...remainingMessages];
+                });
+                options._fetch ? goodNotification({title: 'Message fetching', message: 'Successfully fetched!'}): null;
             })
             .catch(() => {badNotification({title: 'Message fetching', message: 'Failed to fetch messages!'})});
     }
 
-    const refreshMessages = (options: MessageFetchingOptions) => {
-        messageService.refresh(params, options)
-            .then(res => res.json())
-            .then((data: Message[]) => {
-                setMessageData(prevState => {
-                    const newMessages = data.filter(msg => !prevState.some(existingMsg => existingMsg.id === msg.id))
-                    return [...prevState, ...newMessages];
-                })
-            })
-            .catch(() => {badNotification({title: 'Message fetching', message: 'Failed to fetch messages!'})});
-    }
 
     useEffect(() => {
        setMessageData([]);
@@ -118,11 +116,6 @@ export default function ChannelViewPage() {
 
     ]
 
-    const handleTopRefreshButton = () => {
-        const lassMessage = messageData[0];
-        
-    }
-
     return (
         <>
                 {contextMenu && <ContextMenu
@@ -139,7 +132,10 @@ export default function ChannelViewPage() {
                         }
                     </ChannelShell.Header>
                     <ChannelShell.Main>
-                        {messageData.length > 0 && <RefreshButton onClick={handleTopRefreshButton}/>}
+                        {messageData.length > 0 && <RefreshButton onClick={() => {
+                            const lastMessage = messageData[0];
+                            fetchMessages({limit: 50, _fetch: true, before: lastMessage.id})
+                        }}/>}
                         <Stack>
                             {messageData.length === 0 && <Emptiness showExtra={false}/>}
 
@@ -150,7 +146,7 @@ export default function ChannelViewPage() {
                             )}
                         </Stack>
                         <RefreshButton onClick={() => {
-                            refreshMessages({limit: 50})
+                            fetchMessages({limit: 50, _fetch: true})
                         }}/>
                     </ChannelShell.Main>
                     <ChannelShell.Footer>
