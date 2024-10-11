@@ -20,6 +20,7 @@ import Emptiness from "../../../components/emptyness/Emptiness.tsx";
 import MessageCard from "../../../components/cards/message/message.card.tsx";
 import { useParams } from "react-router";
 import JoinMessageCard from "../../../components/cards/message/join.message.card.tsx";
+import {type} from "node:os";
 
 export default function ChannelViewPage() {
     type Params = {
@@ -46,8 +47,14 @@ export default function ChannelViewPage() {
 
     const fetchMessages = (options: MessageFetchingOptions) => {
         messageService.fetch(params, options)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Error fetching messages: ${res.statusText}`);
+                }
+                return res.json();
+            })
             .then((data: Message[]) => {
+                if (data.length === 0) return;
                 setMessageData(prevState => {
                     const messageMap = new Map(prevState.map(msg => [msg.id, msg]));
 
@@ -58,11 +65,11 @@ export default function ChannelViewPage() {
                     const updatedMessages = data.map(msg => messageMap.get(msg.id)!);
                     const remainingMessages = prevState.filter(msg => !data.some(newMsg => newMsg.id === msg.id));
 
-                    return [...updatedMessages, ...remainingMessages];
+                    return [...updatedMessages, ...remainingMessages] as Message[];
                 });
                 options._fetch ? goodNotification({title: 'Message fetching', message: 'Successfully fetched!'}): null;
             })
-            .catch(() => {badNotification({title: 'Message fetching', message: 'Failed to fetch messages!'})});
+            .catch((e) => {badNotification({title: 'Message fetching', message: 'Failed to fetch messages!'})});
     }
 
 
@@ -75,6 +82,7 @@ export default function ChannelViewPage() {
 
     // ------ CONTEXT MENU ----------------------------------------------------------
     useEffect(() => {
+        if (messageData.length > 0) console.log(`last: ${messageData[0].id}`)
         const handleClickOutside = () => {
             if (contextMenu) closeContextMenu();
         };
