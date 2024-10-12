@@ -24,7 +24,7 @@ export class BotService {
     }
 
     /**
-     * Can be user as for edit, as for fetch actual info :)
+     * Can be used as for edit, as for fetch actual info :)
      * @param bot Bot id
      * @param token Bot token
      */

@@ -3,6 +3,7 @@ import {Avatar, Group, Image, Paper} from "@mantine/core";
 import styles from  './message.card.module.css';
 import {formatISODate} from "../../../_util/date.formatter";
 import image from '../../../assets/887bc8fac6c9878f058a.png';
+import MessageAttachmentComponent from "./message.attachment.tsx";
 
 export default function MessageCard({message}: {message: Message}) {
 
@@ -45,6 +46,7 @@ export default function MessageCard({message}: {message: Message}) {
                         }}
                     ></div>
                 </div>
+                {message.attachments.map(atch => <MessageAttachmentComponent key={atch.id} attachment={atch}/>)}
             </div>
         </Paper>
     );

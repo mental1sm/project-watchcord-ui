@@ -20,6 +20,10 @@
 
 }
 
+.msg_attachment {
+    max-width: 400px;
+}
+
 .msg_body {
     white-space: normal;
     word-break: break-word;
@@ -33,4 +37,8 @@
 
 .image {
     border-radius: 30px;
+}
+
+.attachment_container {
+
 }

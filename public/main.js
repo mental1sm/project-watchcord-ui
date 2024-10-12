@@ -1,10 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
 
 let mainWindow;
 
 async function createWindow() {
-    //const isDev = await import('electron-is-dev');
     var isDev = process.env.APP_DEV ? (process.env.APP_DEV.trim() == "true") : false;
     console.log(path.join(__dirname, '../dist/index.html'));
 
@@ -13,6 +12,7 @@ async function createWindow() {
         height: 768,
         webPreferences: {
             nodeIntegration: true,
+            preload: path.join(__dirname, 'preload.js')
         },
         autoHideMenuBar: true
     });
@@ -38,5 +38,25 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     if (mainWindow === null) {
         createWindow();
+    }
+});
+
+ipcMain.on('download-image', (event, url, filename) => {
+    const filePath = dialog.showSaveDialogSync({
+        defaultPath: filename || 'downloaded_image.jpg',
+    });
+
+    if (filePath) {
+        const file = fs.createWriteStream(filePath);
+        https.get(url, (response) => {
+            response.pipe(file);
+            file.on('finish', () => {
+                file.close();
+                console.log('Download completed!');
+            });
+        }).on('error', (err) => {
+            fs.unlink(filePath);
+            console.error('Error downloading the file:', err);
+        });
     }
 });

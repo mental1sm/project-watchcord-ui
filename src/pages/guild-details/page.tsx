@@ -65,12 +65,14 @@ export default function GuildDetailsPage() {
 
     const handleNavContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
+        e.stopPropagation();
         setContextMenu({x: e.pageX, y: e.pageY, type: 'nav'})
     }
 
     // @ts-ignore
     const handleMainContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
+        e.stopPropagation();
         setContextMenu({x: e.pageX, y: e.pageY, type: 'main'})
     }
     // -------------------------------------------------------------------------------

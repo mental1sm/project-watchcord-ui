@@ -25,6 +25,7 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
     const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
     const viewportRef = useRef<HTMLDivElement>(null);
     const prevScrollHeight = useRef<number>(0);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!viewportRef.current) return;
@@ -35,14 +36,16 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
 
         if (scrollDiffer > 0) {
             const newScrollTop = viewportRef.current.scrollTop + scrollDiffer;
-            viewportRef.current.scrollTo({ top: newScrollTop, behavior: 'instant' });
+            requestAnimationFrame(() => {
+                viewportRef.current!.scrollTo({ top: newScrollTop, behavior: 'instant' });
+            });
         }
 
     }, [scrollPosition, children]);
 
     return (
         <ScrollArea onScrollPositionChange={onScrollPositionChange} mah={'100vh'} h={'30vh'} className={styles.message_body} viewportRef={viewportRef}>
-            <div>
+            <div ref={containerRef}>
                 {children}
             </div>
         </ScrollArea>

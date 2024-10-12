@@ -59,13 +59,12 @@ export default function ChannelViewPage() {
                     const messageMap = new Map(prevState.map(msg => [msg.id, msg]));
 
                     data.forEach(msg => {
-                        messageMap.set(msg.id, msg);
+                        if (!messageMap.has(msg.id)) {
+                            messageMap.set(msg.id, msg);
+                        }
                     });
 
-                    const updatedMessages = data.map(msg => messageMap.get(msg.id)!);
-                    const remainingMessages = prevState.filter(msg => !data.some(newMsg => newMsg.id === msg.id));
-
-                    return [...updatedMessages, ...remainingMessages] as Message[];
+                    return Array.from(messageMap.values()).sort((a, b) => a.id.localeCompare(b.id)) as Message[];
                 });
                 options._fetch ? goodNotification({title: 'Message fetching', message: 'Successfully fetched!'}): null;
             })
@@ -82,7 +81,7 @@ export default function ChannelViewPage() {
 
     // ------ CONTEXT MENU ----------------------------------------------------------
     useEffect(() => {
-        if (messageData.length > 0) console.log(`last: ${messageData[0].id}`)
+        if (messageData.length > 0) console.log(`first: ${messageData[0].id} ${messageData[0].content}`)
         const handleClickOutside = () => {
             if (contextMenu) closeContextMenu();
         };
@@ -99,6 +98,7 @@ export default function ChannelViewPage() {
 
     const handleChannelContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
+        e.stopPropagation();
         setContextMenu({x: e.pageX, y: e.pageY, type: 'channel', message: null})
     }
 
