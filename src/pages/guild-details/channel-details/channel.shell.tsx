@@ -42,7 +42,7 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
                 viewportRef.current.scrollTo({ top: accumulatedScroll.current, behavior: 'instant' });
             }
             accumulatedScroll.current = 0;
-        }, 1000);
+        }, 2000);
     };
 
     useEffect(() => {
@@ -53,9 +53,7 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
         prevScrollHeight.current = viewportRef.current.scrollHeight;
 
         if (scrollDiffer > 0) {
-            requestAnimationFrame(() => {
-                delayedScroll(scrollDiffer);
-            });
+            delayedScroll(scrollDiffer);
         }
 
     }, [scrollPosition, children]);

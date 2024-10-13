@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
 const exec = require('child_process').exec;
+const fs = require('fs');
+const https = require('https');
 
 let mainWindow;
 
