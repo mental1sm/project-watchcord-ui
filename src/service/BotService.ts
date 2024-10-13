@@ -16,6 +16,10 @@ export class BotService {
         return fetch(baseUrl + '/bot', {method: 'GET'});
     }
 
+    async fetchOne(botId: string) {
+        return fetch(baseUrl + `/bot/${botId}`, {method: 'GET'});
+    }
+
     async addNewBot(token: string): Promise<Response> {
         const payload = {'token': token};
         const headers = {'Content-Type': 'application/json'};

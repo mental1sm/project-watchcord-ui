@@ -10,6 +10,7 @@ import GuildDetailsPage from './pages/guild-details/page.tsx'
 import ChannelViewPage from "./pages/guild-details/channel-details/page.tsx";
 import AboutPage from './pages/about/page.tsx'
 import SettingsPage from './pages/settings/page.tsx'
+import {Navigate} from "react-router";
 
 // const router = createBrowserRouter([
 //   {
@@ -32,20 +33,19 @@ import SettingsPage from './pages/settings/page.tsx'
 // ]);
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
     <HashRouter>
-      <RootLayout>
         <Routes>
-          <Route path='/' element={<App/>}/>
-          <Route path='/about' element={<AboutPage/>}/>
-          <Route path='/settings' element={<SettingsPage/>}/>
-          <Route path='/bot' element={<BotPage/>}/>
-          <Route path='/bot/:botId/guilds' element={<BotGuildsPage/>}/>
-          <Route path='/bot/:botId/guilds/:guildId/channels' element={<GuildDetailsPage/>}>
-            <Route path='/bot/:botId/guilds/:guildId/channels/:channelId' element={<ChannelViewPage/>}/>
-          </Route>
+            <Route path='/' element={<RootLayout />}>
+                <Route index element={<App />} />
+                <Route path='about' element={<AboutPage />} />
+                <Route path='settings' element={<SettingsPage />} />
+                <Route path='bot' element={<BotPage />} />
+                <Route path='bot/:botId/guilds' element={<BotGuildsPage />} />
+                <Route path='bot/:botId/guilds/:guildId/channels' element={<GuildDetailsPage />}>
+                    <Route path=':channelId' element={<ChannelViewPage />} />
+                </Route>
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </RootLayout>
     </HashRouter>
-  </StrictMode>
 )

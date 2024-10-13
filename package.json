@@ -1,7 +1,7 @@
 {
   "name": "project-watchcord-ui",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0a",
   "main": "public/main.js",
   "homepage": "./",
   "build": {
@@ -40,6 +40,8 @@
     "@mantine/modals": "^7.13.2",
     "@mantine/notifications": "^7.13.2",
     "@reduxjs/toolkit": "^2.2.7",
+    "open": "^10.1.0",
+    "postcss-simple-vars": "^7.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.1.2",

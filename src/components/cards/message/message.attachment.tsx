@@ -1,8 +1,8 @@
 import styles from './message.card.module.css'
 import {MessageAttachment} from "../../../_model/Message.ts";
-import {Image} from "@mantine/core";
+import {Image, Skeleton} from "@mantine/core";
 import {modals} from "@mantine/modals";
-import React from "react";
+import React, {useState} from "react";
 
 export default function MessageAttachmentComponent({attachment}: {attachment: MessageAttachment}) {
 
@@ -35,13 +35,11 @@ export default function MessageAttachmentComponent({attachment}: {attachment: Me
         return (
             <div onClick={openImagePreview} className={styles.msg_attachment}>
                 <Image
-                    maw={attachment.width}
-                    mah={attachment.height}
                     pl={5}
                     pt={5}
                     src={attachment.proxy_url}
                     fallbackSrc={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPcCjIVG3qv2QeXJ8vMgsoItp4-EzaL1oRb350awDfo0JgZuRASQXUSd2_p7yIGBv98b8&usqp=CAU'}
-                    />
+                />
             </div>
         );
     }

@@ -7,6 +7,8 @@ import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 import {Provider} from 'react-redux';
 import store from '../store';
+import {Outlet} from "react-router";
+import './globals.css';
 
 
 const breakpoints = {
@@ -20,7 +22,7 @@ const breakpoints = {
     zl: '140em'
 }
 
-export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
+export default function RootLayout() {
 
     const [navOpened, setNavOpened] = useState(false)
 
@@ -38,7 +40,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
                                     onContextMenu={(e) => {e.preventDefault()}}
                                     >
                                     <Header setNavOpened={setNavOpened}/>
-                                        {children}
+                                        <Outlet/>
                                 </AppShell>
                             </>
                         </ModalsProvider>

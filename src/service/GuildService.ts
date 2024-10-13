@@ -15,6 +15,10 @@ export class GuildService {
         return fetch(baseUrl + `/bot/${botId}/guilds`);
     }
 
+    async fetchOne(botId: string, guildId: string) {
+        return fetch(baseUrl + `/bot/${botId}/guilds/${guildId}`, {method: 'GET'});
+    }
+
     async refreshAll(botId: string): Promise<Response> {
         return fetch(baseUrl + `/bot/${botId}/guilds?fetch=true`)
     }

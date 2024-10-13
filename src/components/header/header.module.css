@@ -1,3 +1,4 @@
+
 .navbar {
     background-color: var(--background-color);
 }
@@ -52,9 +53,51 @@
     }
 }
 
-.future_breadcrumbs {
+.breadcrumbs_wrapper {
     margin-left: auto;
     margin-right: auto;
+
+    & a {
+        font-size: 20px;
+    }
+
+    & div {
+        font-size: 20px;
+    }
+
+    @media screen and (max-width: 101em) {
+        & a {
+            font-size: 18px;
+        }
+
+        & div {
+            font-size: 18px;
+        }
+    }
+
+    @media screen and (max-width: 88em) {
+        & a {
+            font-size: 14px;
+        }
+
+        & div {
+            font-size: 14px;
+        }
+    }
+
+    @media screen and (max-width: 62em) {
+        & a {
+            font-size: 12px;
+        }
+
+        & div {
+            font-size: 12px;
+        }
+    }
+}
+
+.breadcrumbs {
+    font-size: 10px;
 }
 
 .header {

@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog} = require('electron');
 const path = require('path');
+const exec = require('child_process').exec;
 
 let mainWindow;
 
@@ -12,7 +13,8 @@ async function createWindow() {
         height: 768,
         webPreferences: {
             nodeIntegration: true,
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+
         },
         autoHideMenuBar: true
     });
@@ -25,6 +27,7 @@ async function createWindow() {
     }
 
     mainWindow.on('closed', () => (mainWindow = null));
+
 }
 
 app.on('ready', createWindow);
@@ -40,6 +43,7 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
 
 ipcMain.on('download-image', (event, url, filename) => {
     const filePath = dialog.showSaveDialogSync({
@@ -60,3 +64,12 @@ ipcMain.on('download-image', (event, url, filename) => {
         });
     }
 });
+
+ipcMain.on('external-link', (event, url) => {
+   if (process.platform === 'win32') {
+       exec(`start ${url}`)
+   }
+   if (process.platform === 'darwin') {
+       exec(`open ${url}`)
+   }
+})

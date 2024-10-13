@@ -35,9 +35,10 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
         prevScrollHeight.current = viewportRef.current.scrollHeight;
 
         if (scrollDiffer > 0) {
-            const newScrollTop = viewportRef.current.scrollTop + scrollDiffer;
             requestAnimationFrame(() => {
-                viewportRef.current!.scrollTo({ top: newScrollTop, behavior: 'instant' });
+                requestAnimationFrame(() => {
+                    viewportRef.current!.scrollTo({ top: scrollDiffer, behavior: 'instant' });
+                });
             });
         }
 

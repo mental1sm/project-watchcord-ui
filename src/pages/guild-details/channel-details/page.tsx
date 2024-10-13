@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from "react";
-import {Skeleton, Stack} from "@mantine/core";
+import {AppShell, Skeleton, Stack} from "@mantine/core";
 import {IconClipboard, IconLayoutSidebarLeftExpand} from "../../../components/icons/IconBundle.tsx";
 import {useDispatch} from "react-redux";
 import { Message } from "../../../_model/Message.ts";
@@ -20,7 +20,6 @@ import Emptiness from "../../../components/emptyness/Emptiness.tsx";
 import MessageCard from "../../../components/cards/message/message.card.tsx";
 import { useParams } from "react-router";
 import JoinMessageCard from "../../../components/cards/message/join.message.card.tsx";
-import {type} from "node:os";
 
 export default function ChannelViewPage() {
     type Params = {
@@ -75,13 +74,13 @@ export default function ChannelViewPage() {
     useEffect(() => {
        setMessageData([]);
        fetchChannel();
-       fetchMessages({limit: 50});
+       fetchMessages({limit: 100});
     }, [channelId]);
 
 
     // ------ CONTEXT MENU ----------------------------------------------------------
     useEffect(() => {
-        if (messageData.length > 0) console.log(`first: ${messageData[0].id} ${messageData[0].content}`)
+        // if (messageData.length > 0) console.log(`first: ${messageData[0].id} ${messageData[0].content}`)
         const handleClickOutside = () => {
             if (contextMenu) closeContextMenu();
         };
@@ -98,7 +97,6 @@ export default function ChannelViewPage() {
 
     const handleChannelContextMenu = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
-        e.stopPropagation();
         setContextMenu({x: e.pageX, y: e.pageY, type: 'channel', message: null})
     }
 
@@ -126,41 +124,41 @@ export default function ChannelViewPage() {
 
     return (
         <>
-                {contextMenu && <ContextMenu
-                x={contextMenu.x} y={contextMenu.y}
-                items={contextMenu.type === 'channel' ? channelContextMenuOptions : messageContextMenuOptions}/>}
-                <ChannelShell onContextMenu={handleChannelContextMenu}>
-                    <ChannelShell.Header>
-                        {!channelData &&<Skeleton w={'30%'} height={18} mt={6} radius="xl" />}
-                        {channelData &&
-                            <>
-                                {rules.find((rule) => rule.type === channelData.type)!.icon}
-                                {channelData.name}
-                            </>
-                        }
-                    </ChannelShell.Header>
-                    <ChannelShell.Main>
-                        {messageData.length > 0 && <RefreshButton onClick={() => {
-                            const lastMessage = messageData[0];
-                            fetchMessages({limit: 50, _fetch: true, before: lastMessage.id})
-                        }}/>}
-                        <Stack>
-                            {messageData.length === 0 && <Emptiness showExtra={false}/>}
+            {contextMenu && <ContextMenu
+            x={contextMenu.x} y={contextMenu.y}
+            items={contextMenu.type === 'channel' ? channelContextMenuOptions : messageContextMenuOptions}/>}
+            <ChannelShell onContextMenu={handleChannelContextMenu}>
+                <ChannelShell.Header>
+                    {!channelData &&<Skeleton w={'30%'} height={18} mt={6} radius="xl" />}
+                    {channelData &&
+                        <>
+                            {rules.find((rule) => rule.type === channelData.type)!.icon}
+                            {channelData.name}
+                        </>
+                    }
+                </ChannelShell.Header>
+                <ChannelShell.Main>
+                    {messageData.length > 0 && <RefreshButton onClick={() => {
+                        const lastMessage = messageData[0];
+                        fetchMessages({limit: 100, _fetch: true, before: lastMessage.id})
+                    }}/>}
+                    <Stack>
+                        {messageData.length === 0 && <Emptiness showExtra={false}/>}
 
-                            {messageData.length > 0 && messageData.map(msg =>
-                                (
-                                    msg.type === 7 ? <JoinMessageCard message={msg} key={msg.id}/> : <MessageCard message={msg} key={msg.id}/>
-                                )
-                            )}
-                        </Stack>
-                        <RefreshButton onClick={() => {
-                            fetchMessages({limit: 50, _fetch: true})
-                        }}/>
-                    </ChannelShell.Main>
-                    <ChannelShell.Footer>
-                        ...
-                    </ChannelShell.Footer>
-                </ChannelShell>
+                        {messageData.length > 0 && messageData.map(msg =>
+                            (
+                                msg.type === 7 ? <JoinMessageCard message={msg} key={msg.id}/> : <MessageCard message={msg} key={msg.id}/>
+                            )
+                        )}
+                    </Stack>
+                    <RefreshButton onClick={() => {
+                        fetchMessages({limit: 100, _fetch: true})
+                    }}/>
+                </ChannelShell.Main>
+                <ChannelShell.Footer>
+                    ...
+                </ChannelShell.Footer>
+            </ChannelShell>
         </>
     );
 }

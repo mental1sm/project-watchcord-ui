@@ -21,7 +21,9 @@
 }
 
 .msg_attachment {
-    max-width: 400px;
+    & img {
+        max-height: 400px;
+    }
 }
 
 .msg_body {
