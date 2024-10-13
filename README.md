@@ -1,7 +1,10 @@
 # Project WatchCord
 
 ## Description
-WatchCord frontend, wrote on React & React router dom & Redux.
+Project WatchCord - app that provides you way to read messages from bot POV.
+That's allow you to use leaked Discord Bot tokens to observe server channels and check messages inside.
+
+WatchCord frontend. Wrote on React & React router dom & Redux.
 
 Client: [LINK](https://github.com/mental1sm/project-watchcord-ui)
 
