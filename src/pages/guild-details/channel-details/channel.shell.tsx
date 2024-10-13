@@ -27,6 +27,24 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
     const prevScrollHeight = useRef<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const accumulatedScroll = useRef(0);
+
+    const delayedScroll = (amount: number) => {
+        accumulatedScroll.current += amount;
+
+        if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+        }
+
+        scrollTimeoutRef.current = setTimeout(() => {
+            if (viewportRef.current) {
+                viewportRef.current.scrollTo({ top: accumulatedScroll.current, behavior: 'instant' });
+            }
+            accumulatedScroll.current = 0;
+        }, 1000);
+    };
+
     useEffect(() => {
         if (!viewportRef.current) return;
 
@@ -36,9 +54,7 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
 
         if (scrollDiffer > 0) {
             requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    viewportRef.current!.scrollTo({ top: scrollDiffer, behavior: 'instant' });
-                });
+                delayedScroll(scrollDiffer);
             });
         }
 
