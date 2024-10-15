@@ -43,5 +43,11 @@
 }
 
 .attachment_container {
+    & section {
+        overflow: hidden;
+    }
+}
 
+.attachment_modal_img {
+    height: 80vh;
 }

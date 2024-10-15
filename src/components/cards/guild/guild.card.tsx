@@ -2,9 +2,14 @@ import {Badge, Card, Group, Image, Text} from "@mantine/core";
 import styles from '../card.module.css'
 import React from "react";
 import {Guild} from "../../../_model/Guild";
+import {LocalizationStore} from "../../../_util/language.store.ts";
+import {RootState} from "../../../store";
+import {useSelector} from "react-redux";
 
 
 export default function GuildCard({guild, onContextMenu, onClick}: {guild: Guild, onContextMenu: React.MouseEventHandler<HTMLDivElement>, onClick: React.MouseEventHandler<HTMLDivElement>}) {
+    const language = useSelector((state: RootState) => state.settings.lang);
+    const localization = LocalizationStore.get(language)!;
 
     return (
         <Card shadow={'sm'} withBorder onContextMenu={onContextMenu} onClick={onClick} className={styles.card}>
@@ -19,8 +24,8 @@ export default function GuildCard({guild, onContextMenu, onClick}: {guild: Guild
                 <Text fw={500}>{guild.name}</Text>
             </Group>
             <Group>
-                <Badge color="blue">Members: {guild.membersCount}</Badge>
-                <Badge color="grape">Channels: {guild.channelsCount}</Badge>
+                <Badge color="blue">{localization.MEMBERS}: {guild.membersCount}</Badge>
+                <Badge color="grape">{localization.CHANNELS}: {guild.channelsCount}</Badge>
             </Group>
         </Card>
     );

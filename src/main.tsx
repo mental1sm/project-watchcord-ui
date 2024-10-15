@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -12,25 +11,6 @@ import AboutPage from './pages/about/page.tsx'
 import SettingsPage from './pages/settings/page.tsx'
 import {Navigate} from "react-router";
 
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: (
-//       <RootLayout>
-//         <App/>
-//       </RootLayout>
-//     ),
-//     errorElement: <p>ERROR</p>,
-//   },
-//   {
-//     path: "/bot",
-//     element: (
-//       <RootLayout>
-//         <></>
-//       </RootLayout>
-//     )
-//   }
-// ]);
 
 createRoot(document.getElementById('root')!).render(
     <HashRouter>

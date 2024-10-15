@@ -1,6 +1,7 @@
 import { Langs } from "../store/SettingsStateSlice";
 
 export type Localization = {
+    UI_LANG: string;
     LANG: string;
     UI_SCALE: string;
     SETTINGS: string;
@@ -8,6 +9,7 @@ export type Localization = {
     GITHUB: string;
     
 
+    ADD: string;
     OPEN: string;
     REFRESH: string;
     REFRESH_ALL: string;
@@ -47,7 +49,8 @@ export type Localization = {
 
     GUILD: string;
     GUILDS_COUNT: string;
-    MEMBERS_COUNT: string;
+    MEMBERS: string;
+    CHANNELS: string;
     GUILD_FETCHING: string;
     GUILD_REFRESHING: string;
 
@@ -67,13 +70,15 @@ const APP_LOCALISATION: LocalisationItem[] = [
     {
         name: 'en',
         loc: {
+            UI_LANG: "UI Language",
             LANG: 'English',
             UI_SCALE: 'UI Scale',
             SETTINGS: 'Settings',
-            ABOUT: 'About',
             GITHUB: 'Github',
 
 
+            ADD: 'Add',
+            ABOUT: 'About',
             OPEN: 'Open',
             REFRESH: 'Refresh',
             REFRESH_ALL: 'Refresh all',
@@ -81,15 +86,15 @@ const APP_LOCALISATION: LocalisationItem[] = [
             DELETE: 'Delete',
             COLLAPSE_SIDEBAR: 'Collapse sidebar',
             EXPAND_SIDEBAR: 'Expand sidebar',
-            COPY_TO_CLIPBOARD: 'Copy to clipboard',
 
+            COPY_TO_CLIPBOARD: 'Copy to clipboard',
             MODAL_DELETE: 'Delete',
             MODAL_DELETE_ALERT_TEXT: "This action will delete this Bot from WatchCord. Real bot is not affected. Are you sure?",
             MODAL_TOKEN: "Token",
             MODAL_ENTER_TOKEN: "Enter token",
+
+
             MODAL_TOKEN_DESC: "Discord Bot secret token",
-
-
             MODAL_CANCEL: 'Cancel',
             BOT: 'Bot',
             NEW_BOT: 'New bot',
@@ -98,20 +103,21 @@ const APP_LOCALISATION: LocalisationItem[] = [
             BOT_EDITION: 'Bot edition',
             BOT_DELETION: 'Bot deletion',
             BOT_FETCHING: 'Bot fetching',
-            BOT_REFRESHING: 'Bot refreshing',
 
+            BOT_REFRESHING: 'Bot refreshing',
             GUILD: 'Guild',
             GUILDS_COUNT: 'Guilds count',
-            MEMBERS_COUNT: 'Members count',
+            MEMBERS: 'Members',
+            CHANNELS: 'Channels',
             GUILD_FETCHING: 'Guild fetching',
+
             GUILD_REFRESHING: "Guilds refreshing",
-
             CHANNEL: 'Channel',
+
             CHANNEL_FETCHING: 'Channel fetching',
-
             MESSAGE: 'Message',
-            MESSAGE_FETCHING: 'Message fetching',
 
+            MESSAGE_FETCHING: 'Message fetching',
             ADDITION_SUCCESS: 'Successfully added',
             ADDITION_FAIL: 'Failed to add',
             FETCHING_SUCCESS: 'Successfully fetched',
@@ -120,20 +126,22 @@ const APP_LOCALISATION: LocalisationItem[] = [
             REFRESHING_FAIL: 'Failed to refresh',
             DELETION_SUCCESS: 'Successfully deleted',
             DELETION_FAIL: 'Failed to delete',
-            EDITION_SUCCESS:'Successfully edited',
-            EDITION_FAIL: 'Failed to edit',
+            EDITION_SUCCESS: 'Successfully edited',
+            EDITION_FAIL: 'Failed to edit'
         }
     },
     {
         name: 'ru',
         loc: {
+            UI_LANG: "Язык интерфейса",
             LANG: 'Русский',
             UI_SCALE: 'Масштаб интерфейса',
             SETTINGS: 'Настройки',
-            ABOUT: 'О программе',
             GITHUB: 'Репозиторий',
 
 
+            ADD: 'Добавить',
+            ABOUT: 'О программе',
             OPEN: 'Открыть',
             REFRESH: 'Обновить',
             REFRESH_ALL: 'Обновить все',
@@ -141,16 +149,16 @@ const APP_LOCALISATION: LocalisationItem[] = [
             DELETE: 'Удалить',
             COLLAPSE_SIDEBAR: 'Спрятать боковую панель',
             EXPAND_SIDEBAR: 'Раскрыть боковую панель',
+
+
             COPY_TO_CLIPBOARD: 'Скопировать в буфер обмена',
-
-
             MODAL_DELETE: 'Удалить',
             MODAL_DELETE_ALERT_TEXT: "Это действие удалит бота только из WatchCord. Реальный бот не будет затронут. Вы уверены?",
             MODAL_TOKEN: "Токен",
             MODAL_ENTER_TOKEN: "Введите токен",
+
+
             MODAL_TOKEN_DESC: "Токен бота",
-
-
             MODAL_CANCEL: 'Отенить',
             BOT: 'Бот',
             NEW_BOT: 'Новый бот',
@@ -159,21 +167,22 @@ const APP_LOCALISATION: LocalisationItem[] = [
             BOT_EDITION: 'Редактирование бота',
             BOT_DELETION: 'Удаление бота',
             BOT_FETCHING: 'Подгрузка бота',
+
+
             BOT_REFRESHING: 'Обновление бота',
-
-
             GUILD: 'Сервер',
             GUILDS_COUNT: 'Количество серверов',
-            MEMBERS_COUNT: 'Количество участников',
+            MEMBERS: 'Участники',
+            CHANNELS: 'Каналы',
             GUILD_FETCHING: 'Подгрузка серверов',
+
             GUILD_REFRESHING: "Обновление серверов",
-
             CHANNEL: 'Канал',
+
             CHANNEL_FETCHING: 'Подгрузка каналов',
-
             MESSAGE: 'Сообщения',
-            MESSAGE_FETCHING: 'Подгрузка сообщений',
 
+            MESSAGE_FETCHING: 'Подгрузка сообщений',
             ADDITION_SUCCESS: 'Успешно добавлено',
             ADDITION_FAIL: 'Не удалось добавить',
             FETCHING_SUCCESS: 'Успешно подгружено',
@@ -182,7 +191,7 @@ const APP_LOCALISATION: LocalisationItem[] = [
             REFRESHING_FAIL: 'Не удалось обновить',
             DELETION_SUCCESS: 'Успешно удалено',
             DELETION_FAIL: 'Не удалось удалить',
-            EDITION_SUCCESS:'Успешно отредактировано',
+            EDITION_SUCCESS: 'Успешно отредактировано',
             EDITION_FAIL: 'Не удалось отредактировать',
         }
     }

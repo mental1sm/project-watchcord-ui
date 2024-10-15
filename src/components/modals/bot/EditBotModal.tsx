@@ -25,7 +25,7 @@ const EditBotModal: React.FC<EditBotModalProps> = ({ token, onClose, onSave }) =
                 />
             </InputWrapper>
             <Button color={'violet'} onClick={() => { onSave(editableToken); onClose(); }}>
-                Edit
+                {localization.EDIT}
             </Button>
         </Stack>
     );

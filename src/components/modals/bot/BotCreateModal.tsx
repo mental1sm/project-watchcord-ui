@@ -19,7 +19,7 @@ export default function BotCreateModal({ onClose, onSave }: CreateBotModalProps)
             <InputWrapper label={localization.MODAL_TOKEN} description={localization.MODAL_TOKEN_DESC}>
                 <Input placeholder={localization.MODAL_ENTER_TOKEN} value={token} onChange={(e) => setToken(e.currentTarget.value)}/>
             </InputWrapper>
-            <Button onClick={() => {onSave(token); onClose();}}>Add</Button>
+            <Button onClick={() => {onSave(token); onClose();}}>{localization.ADD}</Button>
         </Stack>
     );
 }

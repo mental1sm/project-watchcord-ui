@@ -3,13 +3,15 @@ import { AppShell, Button, Center, Stack } from "@mantine/core";
 import { SettingCard } from "../../components/cards/settings/settings.card";
 import styles from './page.module.css';
 import ComboBoxSetting, { ComboboxItem } from "../../components/cards/settings/combobox.setting";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "../../store";
 import {Localization, LocalizationStore} from "../../_util/language.store.ts";
+import {setNavbarState} from "../../store/NavbarStateSlice.ts";
 
 export default function SettingsPage() {
     const language = useSelector((state: RootState) => state.settings.lang);
     const [localization, setLocalization] = useState<Localization>(LocalizationStore.get(language)!);
+    const dispatch = useDispatch();
 
     type Setting = {
         name: string,
@@ -21,9 +23,13 @@ export default function SettingsPage() {
         {name: '🇷🇺 Russian', value: 'ru'}
     ];
     const settings: Setting[] = [
-        {name: localization.LANG, children: <ComboBoxSetting options={languageOptions}/>},
+        {name: `${localization.UI_LANG}: ${localization.LANG}`, children: <ComboBoxSetting options={languageOptions}/>},
         //{name: localization.UI_SCALE, children: <Button>Test</Button>}
     ]
+
+    useEffect(() => {
+        dispatch(setNavbarState(false));
+    }, []);
 
     useEffect(() => {
         setLocalization(LocalizationStore.get(language)!);

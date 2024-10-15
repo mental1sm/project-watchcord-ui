@@ -179,7 +179,7 @@ export default function BotPage() {
             <AppShell.Main onContextMenu={handleMainContextMenu}>
                 <SimpleGrid
                     p={'md'}
-                    cols={{base: 1, xs: 2, sm: 3, md: 3, lg: 4, xl: 5, xxl: 6, xxxl: 7, zl: 8}}
+                    cols={{base: 1, xs: 2, sm: 2, md: 3, lg: 3, xl: 4, xxl: 5, xxxl: 6, zl: 6}}
                     spacing={{base: 10, sm: 'xl'}}
                 >
                     {botData.length > 0 && botData?.map(b => {
