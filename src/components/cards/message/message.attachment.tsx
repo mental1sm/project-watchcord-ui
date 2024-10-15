@@ -38,7 +38,7 @@ export default function MessageAttachmentComponent({attachment}: {attachment: Me
     const imageAttachment = () => {
         const openImagePreview = () => modals.open({
             title: attachment.filename,
-            size: attachment.width,
+            size: "xl",
             className: styles.attachment_container,
             children: (
                 <div>
