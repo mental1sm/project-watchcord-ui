@@ -32,7 +32,6 @@ export default function ComboBoxSetting({options}: {options: ComboboxItem[]}) {
 
     return (
         <Combobox store={combobox} onOptionSubmit={(val) => {
-            console.log(val)
             setValue(val);
             const selectedItem = options.find(i => i.value === val);
             setName(selectedItem ? selectedItem.name : null);
