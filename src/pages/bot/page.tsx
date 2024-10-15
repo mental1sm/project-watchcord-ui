@@ -12,40 +12,44 @@ import Emptiness from "../../components/emptyness/Emptiness";
 import {badNotification, goodNotification} from "../../components/notifications/notifications";
 import EditBotModal from "../../components/modals/bot/EditBotModal";
 import {IconEdit, IconFolderOpen, IconPlus, IconRefresh, IconTrash} from "../../components/icons/IconBundle.tsx";
-import { useDispatch } from "react-redux";
-import { setActiveIcon } from "../../store/NavigationIconSlice";
-import { ActiveNavigation } from "../../_constants/enums";
+import {useDispatch, useSelector} from "react-redux";
 import BotCreateModal from "../../components/modals/bot/BotCreateModal";
 import {setNavbarState, setNavbarVisibility} from "../../store/NavbarStateSlice";
 import { useNavigate } from "react-router-dom";
+import {LocalizationStore} from "../../_util/language.store.ts";
+import {RootState} from "../../store";
 
 export default function BotPage() {
-    const [botData, setBotData] = useState<Bot[]>([]);
-    const [contextMenu, setContextMenu] = useState<{ x: number, y: number, type: 'main' | 'bot', bot: Bot | null } | null>(null);
+    const language = useSelector((state: RootState) => state.settings.lang);
+    const localization = LocalizationStore.get(language)!;
 
+    const [botData, setBotData] = useState<Bot[]>([]);
+
+    const [contextMenu, setContextMenu] = useState<{ x: number, y: number, type: 'main' | 'bot', bot: Bot | null } | null>(null);
     const botService: BotService = BotService.instance();
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const fetchAllBots = () => {
+
         botService.fetchAllBots()
             .then((res) => res.json())
             .then((data) => {
                 setBotData(data);
             })
             .catch(() => {
-                badNotification({title: 'Bot fetching', message: 'Failed to fetch bots from database!'})
+                badNotification({title: localization.BOT_FETCHING, message: localization.FETCHING_FAIL})
             })
             .finally(() => {});
     }
-
     useEffect(() => {
         dispatch(setNavbarVisibility(false));
         dispatch(setNavbarState(false));
-        dispatch(setActiveIcon(ActiveNavigation.HOME));
         fetchAllBots();
     }, []);
+
+
 
     // ------ CONTEXT MENU ----------------------------------------------------------
     const handleBotCardContextMenu = (e: React.MouseEvent<HTMLDivElement>, bot: Bot) => {
@@ -75,27 +79,27 @@ export default function BotPage() {
 
     // ------ BOT MODALS -- ----------------------------------------------------------
     const openDeleteModal = () => modals.openConfirmModal({
-        title: 'Bot deletion',
+        title: localization.BOT_DELETION,
         children: (
             <Text size='sm'>
-                This action will delete this Bot from WatchCord. Real bot is not affected. Are you sure?
+                {localization.MODAL_DELETE_ALERT_TEXT}
             </Text>
         ),
-        labels: {confirm: 'Delete', cancel: 'Cancel'},
+        labels: {confirm: localization.MODAL_DELETE, cancel: localization.MODAL_CANCEL},
         confirmProps: {color: 'red'},
         onCancel: () => {
-            console.log('Action canceled');
+            
         },
         onConfirm: () => {
             botService.deleteBot(contextMenu!.bot!)
                 .then((res) => {
                     if (res.ok) {
-                        goodNotification({title: 'Bot deletion', message: 'Successfully deleted'});
+                        goodNotification({title: localization.BOT_DELETION, message: localization.DELETION_SUCCESS});
                         setBotData(botData.filter((bot) => bot.id === contextMenu!.bot!.id))
                     }
                 })
                 .catch(() => {
-                    badNotification({title: 'Bot deletion', message: 'Failed to delete'})
+                    badNotification({title: localization.BOT_DELETION, message: localization.DELETION_FAIL})
                 })
         }
     });
@@ -105,28 +109,28 @@ export default function BotPage() {
             .then((res) => {
                 if (res.status === 201) {
                     goodNotification({
-                        title: 'New Bot',
-                        message: 'Successfully added to the database'
+                        title: localization.NEW_BOT,
+                        message: localization.ADDITION_SUCCESS
                     })
                     fetchAllBots();
                 }
             }).catch(() => {
                 badNotification({
-                    title: 'New Bot',
-                    message: 'Failed to add'
+                    title: localization.NEW_BOT,
+                    message: localization.ADDITION_SUCCESS
                 })
         })
 
     }
     const openCreateBotModal = () => modals.open({
-        title: 'New Bot',
+        title: localization.NEW_BOT,
         children: (
             <BotCreateModal onClose={() => modals.closeAll()} onSave={handleBotCreate}/>
         )
     });
 
     const openEditBotModal = () => modals.open({
-        title: 'Edit existing Bot',
+        title: localization.BOT_EDIT,
         children: (
             <EditBotModal
                 token={contextMenu!.bot!.token}
@@ -135,10 +139,10 @@ export default function BotPage() {
                     botService.editBot(contextMenu!.bot!, newToken)
                         .then((res) => {
                         if (res.ok) {
-                            goodNotification({title: 'Bot edit', message: 'Successfully edited'})
+                            goodNotification({title: localization.BOT_EDITION, message: localization.EDITION_SUCCESS})
                         }
                     })
-                        .catch(() => { badNotification({title: 'Bot edit', message: 'Failed to edit'}) })
+                        .catch(() => { badNotification({title: localization.BOT_EDITION, message: localization.EDITION_FAIL}) })
                 }}
             />
         )
@@ -151,23 +155,23 @@ export default function BotPage() {
             .then(res => {
                 if (res.ok) {
                     fetchAllBots();
-                    goodNotification({title: 'Bot refreshing', message: 'Successfully refreshed bot!'})
+                    goodNotification({title: localization.BOT_REFRESHING, message: localization.REFRESHING_SUCCESS})
                 }
             })
             .catch(() => {
-                badNotification({title: 'Bot refreshing', message: 'Failed to refresh bot!'})
+                badNotification({title: localization.BOT_REFRESHING, message: localization.REFRESHING_FAIL})
             })
     }
 
     const botMenuOptions: MenuItem[] = [
-        {name: 'Open', callback: () => {navigate(`/bot/${contextMenu!.bot!.id}/guilds`)}, iconChild: <IconFolderOpen stroke={2} />},
-        {name: 'Refresh', callback: refreshBot, iconChild: <IconRefresh stroke={2} />},
-        {name: 'Edit', callback: openEditBotModal, iconChild: <IconEdit stroke={2} />},
-        {name: 'Delete', callback: openDeleteModal, iconChild: <IconTrash stroke={2} />}
+        {name: localization.OPEN, callback: () => {navigate(`/bot/${contextMenu!.bot!.id}/guilds`)}, iconChild: <IconFolderOpen stroke={2} />},
+        {name: localization.REFRESH, callback: refreshBot, iconChild: <IconRefresh stroke={2} />},
+        {name: localization.EDIT, callback: openEditBotModal, iconChild: <IconEdit stroke={2} />},
+        {name: localization.DELETE, callback: openDeleteModal, iconChild: <IconTrash stroke={2} />}
     ];
 
     const mainMenuOptions: MenuItem[] = [
-        {name: 'New Bot', callback: () => openCreateBotModal(), iconChild: <IconPlus stroke={2} />},
+        {name: localization.NEW_BOT, callback: () => openCreateBotModal(), iconChild: <IconPlus stroke={2} />},
     ];
 
     return (

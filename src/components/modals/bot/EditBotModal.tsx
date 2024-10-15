@@ -1,5 +1,8 @@
 import { Button, Input, InputWrapper, Stack } from "@mantine/core";
 import React, { useState } from "react";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
+import {LocalizationStore} from "../../../_util/language.store.ts";
 
 interface EditBotModalProps {
     token: string;
@@ -9,12 +12,14 @@ interface EditBotModalProps {
 
 const EditBotModal: React.FC<EditBotModalProps> = ({ token, onClose, onSave }) => {
     const [editableToken, setEditableToken] = useState(token);
+    const language = useSelector((state: RootState) => state.settings.lang);
+    const localization = LocalizationStore.get(language)!;
 
     return (
         <Stack>
-            <InputWrapper label={'Token'} description={'Discord Bot secret token'}>
+            <InputWrapper label={localization.MODAL_TOKEN} description={localization.MODAL_TOKEN_DESC}>
                 <Input
-                    placeholder={'Enter token'}
+                    placeholder={localization.MODAL_ENTER_TOKEN}
                     value={editableToken}
                     onChange={(e) => setEditableToken(e.currentTarget.value)}
                 />

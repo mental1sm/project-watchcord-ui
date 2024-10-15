@@ -37,6 +37,7 @@ export default function MessageAttachmentComponent({attachment}: {attachment: Me
                 <Image
                     pl={5}
                     pt={5}
+                    loading={'eager'}
                     src={attachment.proxy_url}
                     fallbackSrc={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPcCjIVG3qv2QeXJ8vMgsoItp4-EzaL1oRb350awDfo0JgZuRASQXUSd2_p7yIGBv98b8&usqp=CAU'}
                 />

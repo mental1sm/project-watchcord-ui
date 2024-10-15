@@ -1,0 +1,17 @@
+.card {
+    width: 100%;
+}
+
+.card_group {
+    padding-left: 10px;
+    padding-right: 10px;
+    justify-content: space-between;
+}
+
+.divider {
+    margin-top: 10px;
+}
+
+.setting_name {
+    min-width: 100px;
+}

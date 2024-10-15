@@ -1,0 +1,19 @@
+.settings_wrapper {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 55%;
+
+    @media screen and (max-width: 101em) {
+        width: 70%;
+    }
+
+    @media screen and (max-width: 88em) {
+        width: 90%;
+    }
+
+    @media screen and (max-width: 62em) {
+        width: 100%;
+    }
+}

@@ -15,6 +15,7 @@ import ContextMenu from "../../components/menu/ContextMenu";
 import SideNavbar from "../../components/nav/side.navbar";
 import Emptiness from "../../components/emptyness/Emptiness";
 import { Outlet, useParams } from "react-router";
+import {LocalizationStore} from "../../_util/language.store.ts";
 
 export default function GuildDetailsPage() {
     const {botId, guildId} = useParams();
@@ -23,6 +24,8 @@ export default function GuildDetailsPage() {
     const channelService = ChannelService.instance();
     const navbarStatus = useSelector((state: RootState) => state.navbar.isOpened);
     const dispatch = useDispatch();
+    const language = useSelector((state: RootState) => state.settings.lang);
+    const localization = LocalizationStore.get(language)!;
 
 
     const fetchChannels = (fetch: boolean = false) => {
@@ -30,10 +33,10 @@ export default function GuildDetailsPage() {
             .then((res) => res.json())
             .then((data) => {
                 setChannelData(data)
-                fetch ? goodNotification({title: 'Channel fetching', message: 'Successful channel fetching'}) : null;
+                fetch ? goodNotification({title: localization.CHANNEL_FETCHING, message: localization.FETCHING_SUCCESS}) : null;
             })
             .catch(() => {
-                badNotification({title: 'Channel fetching', message: 'Failed to fetch!'})
+                badNotification({title: localization.CHANNEL_FETCHING, message: localization.FETCHING_FAIL})
             })
     }
 
@@ -144,12 +147,12 @@ export default function GuildDetailsPage() {
     // -------------------------------------------------------------------------------
 
     const navContextMenuOptions: MenuItem[] = [
-        { name: 'Refresh all', iconChild: <IconRefresh stroke={2} />, callback: () => fetchChannels(true)},
-        { name: 'Collapse sidebar', iconChild: <IconLayoutSidebarLeftCollapse stroke={2}/>, callback: () => dispatch(setNavbarState(false))}
+        { name: localization.REFRESH_ALL, iconChild: <IconRefresh stroke={2} />, callback: () => fetchChannels(true)},
+        { name: localization.COLLAPSE_SIDEBAR, iconChild: <IconLayoutSidebarLeftCollapse stroke={2}/>, callback: () => dispatch(setNavbarState(false))}
     ]
 
     const mainContextMenuOptions: MenuItem[] = [
-        { name: 'Expand sidebar', iconChild: <IconLayoutSidebarLeftExpand stroke={2}/>, callback: () => dispatch(setNavbarState(true))}
+        { name: localization.EXPAND_SIDEBAR, iconChild: <IconLayoutSidebarLeftExpand stroke={2}/>, callback: () => dispatch(setNavbarState(true))}
     ];
 
     return (

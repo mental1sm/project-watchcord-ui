@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import iconReducer from "./NavigationIconSlice";
 import navbarStateReducer from "./NavbarStateSlice";
+import accumulatedScrollStateReducer from "./AccumulatedScrolStateSlice";
+import settingsStateReducer from './SettingsStateSlice';
 
 
 const store = configureStore({
     reducer: {
-        icon: iconReducer,
-        navbar: navbarStateReducer
+        navbar: navbarStateReducer,
+        accumulated: accumulatedScrollStateReducer,
+        settings: settingsStateReducer
     }
 })
 

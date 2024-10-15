@@ -1,6 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './page.module.css';
 import {Divider, Group, ScrollArea} from "@mantine/core";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { addAccumulatedScroll } from '../../../store/AccumulatedScrolStateSlice';
+
 
 const ChannelShell = ({ children, onContextMenu }: {children: React.ReactNode, onContextMenu: React.MouseEventHandler<HTMLDivElement>}) => {
     return <div onContextMenu={onContextMenu} className={styles.channel_body}>
@@ -21,28 +25,27 @@ const ChannelShellHeader = ({ children }: {children: React.ReactNode}) => (
 ;
 
 const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
+    const dispatch = useDispatch();
 
     const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
     const viewportRef = useRef<HTMLDivElement>(null);
     const prevScrollHeight = useRef<number>(0);
     const containerRef = useRef<HTMLDivElement>(null);
+    
+    const accumulatedScroll = useSelector((state: RootState) => state.accumulated.accumulated);
 
-    const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const accumulatedScroll = useRef(0);
+    const uiAccumulatedScroll = (amount: number) => {
+        dispatch(addAccumulatedScroll(amount));
 
-    const delayedScroll = (amount: number) => {
-        accumulatedScroll.current += amount;
+        //console.log(`Added: ${amount} | total: ${accumulatedScroll}`);
+        
+        let scrollAmount = amount > accumulatedScroll ? amount : accumulatedScroll;
+        scrollAmount += amount;
 
-        if (scrollTimeoutRef.current) {
-            clearTimeout(scrollTimeoutRef.current);
+        if (viewportRef.current) {
+            viewportRef.current.scrollTo({ top: scrollAmount, behavior: 'instant' });
+            //console.log(`Scrolling to: ${scrollAmount}`);
         }
-
-        scrollTimeoutRef.current = setTimeout(() => {
-            if (viewportRef.current) {
-                viewportRef.current.scrollTo({ top: accumulatedScroll.current, behavior: 'instant' });
-            }
-            accumulatedScroll.current = 0;
-        }, 2000);
     };
 
     useEffect(() => {
@@ -53,7 +56,9 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
         prevScrollHeight.current = viewportRef.current.scrollHeight;
 
         if (scrollDiffer > 0) {
-            delayedScroll(scrollDiffer);
+            requestAnimationFrame(() => {
+                uiAccumulatedScroll(scrollDiffer);
+            })
         }
 
     }, [scrollPosition, children]);

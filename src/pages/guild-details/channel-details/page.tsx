@@ -1,9 +1,9 @@
 'use client'
 
 import React, {useEffect, useState} from "react";
-import {AppShell, Skeleton, Stack} from "@mantine/core";
+import {Skeleton, Stack} from "@mantine/core";
 import {IconClipboard, IconLayoutSidebarLeftExpand} from "../../../components/icons/IconBundle.tsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Message } from "../../../_model/Message.ts";
 import { Channel } from "../../../_model/Channel.ts";
 import { MessageService } from "../../../service/MessageService.ts";
@@ -20,6 +20,9 @@ import Emptiness from "../../../components/emptyness/Emptiness.tsx";
 import MessageCard from "../../../components/cards/message/message.card.tsx";
 import { useParams } from "react-router";
 import JoinMessageCard from "../../../components/cards/message/join.message.card.tsx";
+import { RootState } from "../../../store";
+import { resetAccumulatedScroll } from "../../../store/AccumulatedScrolStateSlice.ts";
+import {LocalizationStore} from "../../../_util/language.store.ts";
 
 export default function ChannelViewPage() {
     type Params = {
@@ -33,6 +36,8 @@ export default function ChannelViewPage() {
     const [messageData, setMessageData] = useState<Message[]>([]);
     const [channelData, setChannelData] = useState<Channel | null>(null);
     const [contextMenu, setContextMenu] = useState<{x: number, y: number, type: 'channel' | 'message', message: Message | null} | null>(null);
+    const language = useSelector((state: RootState) => state.settings.lang);
+    const localization = LocalizationStore.get(language)!;
 
     const messageService = MessageService.instance();
     const channelService = ChannelService.instance();
@@ -41,7 +46,7 @@ export default function ChannelViewPage() {
         channelService.fetchOne(params)
             .then(res => res.json())
             .then(data => setChannelData({...data}))
-            .catch(() => {badNotification({title: 'Channel fetching', message: 'Failed to fetch channel!'})});
+            .catch(() => {badNotification({title: localization.CHANNEL_FETCHING, message: localization.FETCHING_FAIL})});
     }
 
     const fetchMessages = (options: MessageFetchingOptions) => {
@@ -65,10 +70,14 @@ export default function ChannelViewPage() {
 
                     return Array.from(messageMap.values()).sort((a, b) => a.id.localeCompare(b.id)) as Message[];
                 });
-                options._fetch ? goodNotification({title: 'Message fetching', message: 'Successfully fetched!'}): null;
+                options._fetch ? goodNotification({title: localization.MESSAGE_FETCHING, message: localization.FETCHING_SUCCESS}): null;
             })
-            .catch((e) => {badNotification({title: 'Message fetching', message: 'Failed to fetch messages!'})});
+            .catch((e) => {badNotification({title: localization.MESSAGE_FETCHING, message: localization.FETCHING_FAIL})});
     }
+
+    useEffect(() => {
+        dispatch(resetAccumulatedScroll(0));
+    }, []);
 
 
     useEffect(() => {
@@ -114,8 +123,8 @@ export default function ChannelViewPage() {
     // -------------------------------------------------------------------------------
 
     const channelContextMenuOptions: MenuItem[] = [
-        { name: 'Expand sidebar', iconChild: <IconLayoutSidebarLeftExpand stroke={2}/>, callback: () => dispatch(setNavbarState(true))},
-        { name: 'Copy to clipboard', iconChild: <IconClipboard stroke={2}/> , callback: copySelectedText}
+        { name: localization.EXPAND_SIDEBAR, iconChild: <IconLayoutSidebarLeftExpand stroke={2}/>, callback: () => dispatch(setNavbarState(true))},
+        { name: localization.COPY_TO_CLIPBOARD, iconChild: <IconClipboard stroke={2}/> , callback: copySelectedText}
     ];
 
     const messageContextMenuOptions: MenuItem[] = [
@@ -139,6 +148,7 @@ export default function ChannelViewPage() {
                 </ChannelShell.Header>
                 <ChannelShell.Main>
                     {messageData.length > 0 && <RefreshButton onClick={() => {
+                        dispatch(resetAccumulatedScroll(0));
                         const lastMessage = messageData[0];
                         fetchMessages({limit: 100, _fetch: true, before: lastMessage.id})
                     }}/>}
