@@ -33,6 +33,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "electron": "set APP_DEV=true && electron .",
+    "electron:darwin": "export APP_DEV=true && electron .",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {

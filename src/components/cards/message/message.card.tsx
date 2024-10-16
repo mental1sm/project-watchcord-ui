@@ -1,11 +1,12 @@
 import {Message} from "../../../_model/Message";
 import {Avatar, Group, Image, Paper} from "@mantine/core";
 import styles from  './message.card.module.css';
-import {formatISODate} from "../../../_util/date.formatter";
 import image from '../../../assets/887bc8fac6c9878f058a.png';
 import MessageAttachmentComponent from "./message.attachment.tsx";
+import { DateFormatter } from "../../../_util/date.formatter.ts";
 
 export default function MessageCard({message}: {message: Message}) {
+    const formatter = DateFormatter.getInstance();
 
     const formatText = (text: string): string => {
         text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
@@ -30,7 +31,7 @@ export default function MessageCard({message}: {message: Message}) {
                 <div className={styles.msg_title}>
                     <Group gap={10}>
                         <div>{message.author.username}</div>
-                        <div>{formatISODate(message.timestamp)}</div>
+                        <div>{formatter.formatISODate(message.timestamp)}</div>
                     </Group>
                 </div>
                 <div className={styles.msg_body}>

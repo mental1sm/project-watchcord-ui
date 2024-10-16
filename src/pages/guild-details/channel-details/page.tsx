@@ -23,6 +23,7 @@ import JoinMessageCard from "../../../components/cards/message/join.message.card
 import { RootState } from "../../../store";
 import { resetAccumulatedScroll } from "../../../store/AccumulatedScrolStateSlice.ts";
 import {LocalizationStore} from "../../../_util/language.store.ts";
+import { DateFormatter } from "../../../_util/date.formatter.ts";
 
 export default function ChannelViewPage() {
     type Params = {
@@ -36,8 +37,11 @@ export default function ChannelViewPage() {
     const [messageData, setMessageData] = useState<Message[]>([]);
     const [channelData, setChannelData] = useState<Channel | null>(null);
     const [contextMenu, setContextMenu] = useState<{x: number, y: number, type: 'channel' | 'message', message: Message | null} | null>(null);
+
     const language = useSelector((state: RootState) => state.settings.lang);
     const localization = LocalizationStore.get(language)!;
+    const formatter = DateFormatter.getInstance();
+    formatter.setLocale(localization.LOCALE);
 
     const messageService = MessageService.instance();
     const channelService = ChannelService.instance();
@@ -49,7 +53,7 @@ export default function ChannelViewPage() {
             .catch(() => {badNotification({title: localization.CHANNEL_FETCHING, message: localization.FETCHING_FAIL})});
     }
 
-    const fetchMessages = (options: MessageFetchingOptions) => {
+    const fetchMessages = (options: MessageFetchingOptions, onException?: () => void) => {
         messageService.fetch(params, options)
             .then(res => {
                 if (!res.ok) {
@@ -72,7 +76,10 @@ export default function ChannelViewPage() {
                 });
                 options._fetch ? goodNotification({title: localization.MESSAGE_FETCHING, message: localization.FETCHING_SUCCESS}): null;
             })
-            .catch((e) => {badNotification({title: localization.MESSAGE_FETCHING, message: localization.FETCHING_FAIL})});
+            .catch((e) => {
+                badNotification({title: localization.MESSAGE_FETCHING, message: localization.FETCHING_FAIL});
+                if (onException) onException();
+            });
     }
 
     useEffect(() => {
@@ -151,7 +158,13 @@ export default function ChannelViewPage() {
                         console.log('RESET!')
                         dispatch(resetAccumulatedScroll(0));
                         const lastMessage = messageData[0];
-                        fetchMessages({limit: 100, _fetch: true, before: lastMessage.id})
+                        const options = {limit: 100, _fetch: true, before: lastMessage.id};
+                        fetchMessages(options, () => {
+                            fetchMessages({
+                                ...options,
+                                _fetch: false
+                            });
+                        })
                     }}/>}
                     <Stack>
                         {messageData.length === 0 && <Emptiness showExtra={false}/>}

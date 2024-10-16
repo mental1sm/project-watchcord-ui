@@ -1,6 +1,7 @@
 import { Langs } from "../store/SettingsStateSlice";
 
 export type Localization = {
+    LOCALE: string;
     UI_LANG: string;
     LANG: string;
     UI_SCALE: string;
@@ -70,6 +71,7 @@ const APP_LOCALISATION: LocalisationItem[] = [
     {
         name: 'en',
         loc: {
+            LOCALE: "en-US",
             UI_LANG: "UI Language",
             LANG: 'English',
             UI_SCALE: 'UI Scale',
@@ -133,6 +135,7 @@ const APP_LOCALISATION: LocalisationItem[] = [
     {
         name: 'ru',
         loc: {
+            LOCALE: "ru-RU",
             UI_LANG: "Язык интерфейса",
             LANG: 'Русский',
             UI_SCALE: 'Масштаб интерфейса',

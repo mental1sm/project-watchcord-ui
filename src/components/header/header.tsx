@@ -11,20 +11,24 @@ import {setNavbarState} from "../../store/NavbarStateSlice";
 import {Link, NavLink, useLocation} from "react-router-dom";
 
 import {IconBrandGithub, IconCategory, IconInfoSquareRounded, IconSettings, Logo} from "../icons/IconBundle.tsx";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import {BotService} from "../../service/BotService.ts";
 import {GuildService} from "../../service/GuildService.ts";
 import {ChannelService} from "../../service/ChannelService.ts";
 import {Bot} from "../../_model/Bot.ts";
 import {Guild} from "../../_model/Guild.ts";
 import {Channel} from "../../_model/Channel.ts";
+import { HeaderNavigator } from "./header.navigator.ts";
 
 export default function Header({setNavOpened} : {setNavOpened: Dispatch<SetStateAction<boolean>>}) {
+    const headerNavigator = HeaderNavigator.getInstance();
+
     const dispatch: AppDispatch = useDispatch();
     const navbarStatus = useSelector((state: RootState) => state.navbar.isOpened);
     const navbarHidden = useSelector((state: RootState) => state.navbar.visible);
 
     const location = useLocation();
+    const navigate = useNavigate();
     const botService = BotService.instance();
     const guildService = GuildService.instance();
     const channelService = ChannelService.instance();
@@ -61,12 +65,14 @@ export default function Header({setNavOpened} : {setNavOpened: Dispatch<SetState
 
     useEffect(() => {
         generateCrumbs();
+        headerNavigator.setPath(location.pathname);
     }, [location]);
 
 
     useEffect(() => {
         setNavOpened(navbarStatus);
     }, [navbarStatus]);
+
 
 
     return (
@@ -114,8 +120,13 @@ export default function Header({setNavOpened} : {setNavOpened: Dispatch<SetState
                 <NavLink 
                 className={
                     ({isActive, isPending}) => `${styles.link_wrapper} ${styles.link_hover} ${isActive ? styles.active : null}`
-                } 
-                to={'/settings'}>
+                }
+                to={'/settings'}
+                onClick={() => {
+                    const currentPath = headerNavigator.getPath();
+                    if (currentPath === '/settings') navigate(-1);
+                }} 
+                >
                     <IconSettings stroke={2} size={30} />
                 </NavLink>
             </div>
