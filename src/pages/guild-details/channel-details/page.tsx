@@ -148,6 +148,7 @@ export default function ChannelViewPage() {
                 </ChannelShell.Header>
                 <ChannelShell.Main>
                     {messageData.length > 0 && <RefreshButton onClick={() => {
+                        console.log('RESET!')
                         dispatch(resetAccumulatedScroll(0));
                         const lastMessage = messageData[0];
                         fetchMessages({limit: 100, _fetch: true, before: lastMessage.id})

@@ -38,9 +38,12 @@ const ChannelShellMain = ({children}: { children: React.ReactNode }) => {
         dispatch(addAccumulatedScroll(amount));
 
         //console.log(`Added: ${amount} | total: ${accumulatedScroll}`);
-        
-        let scrollAmount = amount > accumulatedScroll ? amount : accumulatedScroll;
-        scrollAmount += amount;
+
+        let scrollAmount = amount + accumulatedScroll;
+        if (accumulatedScroll !== 0) {
+            scrollAmount = amount > accumulatedScroll ? amount : accumulatedScroll;
+        }
+
 
         if (viewportRef.current) {
             viewportRef.current.scrollTo({ top: scrollAmount, behavior: 'instant' });
